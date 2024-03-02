@@ -15,6 +15,9 @@ for those people who are interested.
 --]]
 
 -- Local copies of globals used here
+local lfs        = lfs
+local currentdir = lfs.currentdir
+
 local string = string
 local match  = string.match
 local sub    = string.sub
@@ -88,4 +91,9 @@ local function glob_to_pattern(glob)
     end
   end
   return pattern
+end
+
+-- A simple rename
+local function pwd()
+  return currentdir()
 end
