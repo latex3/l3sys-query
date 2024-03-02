@@ -17,10 +17,15 @@ for those people who are interested.
 -- Local copies of globals used here
 local lfs        = lfs
 local currentdir = lfs.currentdir
+local dir        = lfs.dir
 
 local string = string
 local match  = string.match
 local sub    = string.sub
+
+local table = table
+local concat = table.concat
+local insert = table.insert
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
@@ -91,6 +96,48 @@ local function glob_to_pattern(glob)
     end
   end
   return pattern
+end
+
+-- The aim here is to convert a user file specification (if given) into a 
+-- Lua pattern, and then to do a listing.
+local function ls(spec)
+  local spec = spec or "*"
+  -- On Windows, "texlua" will expand globs itself: this can be suppressed by
+  -- surrounding with "'". Formally, this only needs one "'" at one end, but
+  -- that seems extremely unlikely, so rather strip exactly one pair of
+  -- surrounding "'". That means that "l3sys-query" can always be called with
+  -- a glob argument surrounded by "'...'" and will work independent of
+  -- platform.
+  if match(spec,"^'") and match(spec,"'$") then
+    spec = sub(spec,2,-2)
+  end
+  -- Look for absolute paths or any trying to leave the confines of the current
+  -- directory: this is not supported.
+  if match(spec,"%.%.") or 
+     match(spec,"^/") or 
+     match(spec,"^\\") or 
+     match(spec,"[a-zA-Z]:") then
+    return
+  end
+  -- Tidy up and convert to a pattern.
+  if not path then
+    path = "."
+    glob = spec
+  end
+  local pattern = glob_to_pattern(glob)
+  -- So that files have the appropriate partial path at the start in all cases,
+  -- define a printing path that can always be used.
+  local print_path = ""
+  if path ~= "." then print_path = path .. "/" end
+  -- Build a table of entries, excluding "." and "..", and return as a string
+  -- with one entry per line.
+  local t = {}
+  for entry in dir(path) do
+    if match(entry,pattern) and entry ~= "." and entry ~= ".." then
+      insert(t,print_path .. entry)
+    end
+  end
+  return concat(t,"\n")
 end
 
 -- A simple rename
