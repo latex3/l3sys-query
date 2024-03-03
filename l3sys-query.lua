@@ -25,17 +25,9 @@ local script_name = "l3sys-query"
 --
 -- Setup for the CLI: commands and options
 --
-local cmd_list =
-  {
-    ls = 
-      {
-        desc = "Prints a listing based on the <spec> and <options>"
-      },
-    pwd =
-      {
-        desc = "Prints the present working directory"
-      }
-  }
+local cmd_impl = {}
+local cmd_desc = {}
+
 local option_list =
   {
     help =
@@ -316,13 +308,11 @@ local function help()
   print("Valid targets are:")
 
   -- Sort the commands, pad the descriptions, print
-  local t,longest = format_list(cmd_list)
+  local t,longest = format_list(cmd_desc)
   for _,k in ipairs(t) do
-    local cmd = cmd_list[k]
+    local cmd = cmd_desc[k]
     local filler = rep(" ",longest - k:len() + 1)
-    if cmd.desc then
-      print("   " .. k .. filler .. cmd.desc)
-    end
+    print("   " .. k .. filler .. cmd)
   end
 
   -- Same for the options
@@ -353,12 +343,14 @@ local function version()
 end
 
 --
--- The functions for commands: all called cmd_...()
+-- The functions for commands: all held in the table cmd_imp
+-- with docstrings in the table cmd_desc,
 --
 
 -- The aim here is to convert a user file specification (if given) into a 
 -- Lua pattern, and then to do a listing.
-function cmd_ls(spec)
+cmd_desc.ls = "Prints a listing based on the <spec> and <options>"
+function cmd_impl.ls(spec)
   if not spec or spec == "" then
     spec = "*"
   end
@@ -401,7 +393,8 @@ function cmd_ls(spec)
 end
 
 -- A simple rename
-function cmd_pwd()
+cmd_desc.pwd = "Prints the present working directory"
+function cmd_impl.pwd()
   return currentdir()
 end
 
@@ -413,13 +406,13 @@ end
 if cmd == "version" then
   version()
   exit(0)
-elseif not cmd_list[cmd] then
+elseif not cmd_impl[cmd] then
   help()
   exit(1)
 end
 
--- See https://stackoverflow.com/a/1791506/212001
-local result = load("return cmd_" .. cmd .. "(...)")(spec)
+
+local result = cmd_impl[cmd](spec)
 
 if result then
   print(result)
