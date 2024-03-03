@@ -83,6 +83,7 @@ piped to the calling \TeX{} process. Results containing path separators
 
 As well as these targets, the script recognises the options
 \begin{itemize}
+  \item |--type| Selects the type of entry returned by |ls|
 \end{itemize}
 The action of these options on the appropriate \meta{cmd(s)} is detailed below.
 
@@ -124,6 +125,9 @@ for example allowing
 \end{verbatim}
 to work. Note that the \emph{entire} \meta{spec} should be surrounded by |'|
 characters to prevent expansion of the~|*|.
+
+The listing can be filtered based on the type of entry using the |--type|
+option. This takes a string argument, one of |d| (directory) or |f| (file).
 
 For security reasons, only paths within the current working directory can be
 queried, this for example |graphics/*.png| will list all |png| files in the

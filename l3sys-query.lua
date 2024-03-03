@@ -36,6 +36,11 @@ local option_list =
         short = "h",
         type  = "boolean"
       },
+    type = 
+      {
+        desc  = "Selects the type of entry in a directory listing",
+        type  = "string"
+      },
     version =
       {
         desc = "Prints version information and exits",
@@ -51,6 +56,7 @@ local io     = io
 local stderr = io.stderr
 
 local lfs        = lfs
+local attributes = lfs.attributes
 local currentdir = lfs.currentdir
 local dir        = lfs.dir
 
@@ -383,12 +389,22 @@ function cmd_impl.ls(spec)
   -- define a printing path that can always be used.
   local print_path = ""
   if path ~= "." then print_path = path .. "/" end
+  -- A lookup table for attributes: map between lfs- and Unix-type naming
+  local attrib_map = {d = "dir", f = "file"}
   -- Build a table of entries, excluding "." and "..", and return as a string
   -- with one entry per line.
   local t = {}
   for entry in dir(path) do
     if match(entry,pattern) and entry ~= "." and entry ~= ".." then
-      insert(t,print_path .. entry)
+      local opt = options.type
+      if opt then
+        local ft = attributes(entry,"mode")
+        if ft == attrib_map[opt] then
+          insert(t,print_path .. entry)
+        end
+      else
+        insert(t,print_path .. entry)
+      end
     end
   end
   return concat(t,"\n")
