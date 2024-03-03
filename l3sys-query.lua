@@ -14,7 +14,9 @@ for those people who are interested.
 
 --]]
 
+--
 -- Local copies of globals used here
+--
 local io     = io
 local stderr = io.stderr
 
@@ -31,6 +33,10 @@ local sub    = string.sub
 local table = table
 local concat = table.concat
 local insert = table.insert
+
+--
+-- Support functions and data
+--
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
@@ -256,6 +262,10 @@ do
     end
   end
 end
+
+--
+-- The functions for commands
+--
 
 -- The aim here is to convert a user file specification (if given) into a 
 -- Lua pattern, and then to do a listing.
