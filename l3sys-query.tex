@@ -85,6 +85,16 @@ As well as these targets, the script recognises the options
 \end{itemize}
 The action of these options on the appropriate \meta{cmd(s)} is detailed below.
 
+\subsection{\texttt{pwd}}
+
+Returns the present working directory from which \texttt{l3sys-query} is run.
+From within a \TeX{} run, this will (usually) be the directory containing the
+main file, assuming a command such as
+\begin{verbatim}
+  pdflatex main.tex
+\end{verbatim}
+The \texttt{pwd} command is unaffected by any options.
+
 \section{The \LaTeX{} interface}
 
 Using \texttt{l3sys-query} is not tied to access \emph{via} \pkg{expl3}, but
