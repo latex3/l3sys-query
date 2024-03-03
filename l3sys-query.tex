@@ -34,6 +34,35 @@ for those people who are interested.
 
 \begin{documentation}
 
+\section{Introduction}
+
+\TeX{} engines provide only very limited access to information about the system
+they are used on: using primitives, one can for example get the size of a single
+file, but not a list of files in a given location. For most documents, this is
+not an issue as they are self-contained. However, for cases where
+\enquote{dynamic} construction of parts of a document is needed based on file
+lists or other system-dependent data, methods to obtain this from (restricted)
+shell escape are desirable.
+
+Security considerations mean that directly querying the system shell is
+problematic for general use. Instead, \emph{restricted} shell escape may be used
+to get many details, provided a suitable tool is available to provide the
+information in a platform-neutral and security-conscious way. The Java program
+\texttt{texosquery}, written by Nicola Talbot, has been available for a number
+of years to provide this facility. As well as file system insight,
+\texttt{texosquery} also provides for example locale data and other system
+information. However, the requirement for Java means that the script is not
+automatically usable when a \TeX{} system is installed.
+
+The \LaTeX{} team have therefore provided a Lua-based script,
+\texttt{l3sys-query}, which conforms to the security requirements of \TeX{} Live
+using Lua to obtain the system information. This means that it can be used
+\enquote{out of the box} across platforms. The facilities provided by
+\texttt{l3sys-query} are more limited than \texttt{texosquery}, partly as some
+information is available in modern \TeX{} systems using primitives, and partly
+as the aim of \texttt{l3sys-query} is to provide information where there are
+defined use cases. Requests for additional data interfaces are welcome.
+
 \end{documentation}
 
 \PrintIndex
