@@ -15,11 +15,16 @@ for those people who are interested.
 --]]
 
 -- Local copies of globals used here
+local io     = io
+local stderr = io.stderr
+
 local lfs        = lfs
 local currentdir = lfs.currentdir
 local dir        = lfs.dir
 
 local string = string
+local find   = string.find
+local gmatch = string.gmatch
 local match  = string.match
 local sub    = string.sub
 
@@ -96,6 +101,160 @@ local function glob_to_pattern(glob)
     end
   end
   return pattern
+end
+
+-- Options for the command line
+local option_list =
+  {
+    help =
+      {
+        desc  = "Prints this message and exits",
+        short = "h",
+        type  = "boolean"
+      },
+    version =
+      {
+        desc = "Prints version information and exits",
+        short = "v",
+        type  = "boolean"
+      }
+  }
+
+-- Initial data for the command line parser
+local cmd = "help"
+local options = {}
+local spec = ""
+
+do
+  -- Turn long/short options into two lookup tables
+  local long_options = {}
+  local short_options = {}
+  for k,v in pairs(option_list) do
+    if v.short then
+      short_options[v.short] = k
+    end
+    long_options[k] = k
+  end
+
+  -- Minor speed-up
+  local arg = arg
+
+  -- arg[1] is a special case: must be a command or a very limited
+  -- subset (--help|-h or --version|-v)
+  local a = arg[1]
+  if a then
+    -- No options are allowed in position 1, so filter those out
+    if a == "--version" or a == "-v" then
+      cmd = "version"
+    elseif not match(a,"^%-") then
+      cmd = a
+    end
+  end
+
+  -- Stop here if help or version is required
+  if cmd == "help" or cmd == "version" then
+    return
+  end
+
+  -- An auxiliary to grab all file names into a string:
+  -- this reflects the fact that the use case for l3sys-query doesn't
+  -- allow quoting spaces
+  local function tidy(num)
+    local t = {}
+    for i = num,#arg do
+      insert(t,arg[i])
+    end
+    return concat(t," ")
+  end
+
+  -- Examine all other arguments
+  -- Use a while loop rather than for as this makes it easier
+  -- to grab arg for optionals where appropriate
+  local i = 2
+  while i <= #arg do
+    local a = arg[i]
+    -- Terminate search for options
+    if a == "--" then
+      spec = tidy(i + 1)
+      return
+    end
+
+    -- Look for optionals
+    local opt
+    local optarg
+    local opts
+    -- Look for and option and get it into a variable
+    if match(a,"^%-") then
+      if match(a,"^%-%-") then
+        opts = long_options
+        local pos = find(a,"=")
+        if pos then
+          opt = sub(a,3,pos - 1)
+          optarg = sub(a,pos + 1)
+        else
+          opt = sub(a,3)
+        end
+      else
+        opts = short_options
+        opt = sub(a,2,2)
+        -- Only set optarg if it is there
+        if #a > 2 then
+          optarg = sub(a,3)
+        end
+      end
+
+      -- Now check that the option is valid and sort out the argument
+      -- if required
+      local optname = opts[opt]
+      if optname then
+        -- Tidy up arguments
+        if option_list[optname].type == "boolean" then
+          if optarg then
+            local opt = "-" .. (match(a,"^%-%-") and "-" or "") .. opt
+            stderr:write("Value not allowed for option " .. opt .. "\n")
+            cmd = "help"
+            return
+          end
+        else
+          if not optarg then
+            optarg = arg[i + 1]
+            if not optarg then
+              stderr:write("Missing value for option " .. a .. "\n")
+              cmd = "help"
+              return
+            end
+            i = i + 1
+          end
+        end
+      else
+        stderr:write("Unknown option " .. a .. "\n")
+        cmd = "help"
+        return
+      end
+
+      -- Store the result
+      if optarg then
+        if option_list[optname].type == "string" then
+          options[optname] = optarg
+        else
+          local opts = options[optname] or {}
+          for hit in gmatch(optarg,"([^,%s]+)") do
+            insert(opts,hit)
+          end
+          options[optname] = opts
+        end
+      else
+        options[optname] = true
+      end
+      i = i + 1
+    end
+
+    -- Collect up the remaining arguments
+    if not opt then
+      spec = tidy(i)
+      break
+    end
+  end
 end
 
 -- The aim here is to convert a user file specification (if given) into a 
