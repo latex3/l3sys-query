@@ -345,8 +345,8 @@ local function version()
 end
 
 --
--- The functions for commands: all held in the table cmd_imp
--- with docstrings in the table cmd_desc,
+-- The functions for commands: all held in the table cmd_impl
+-- with docstrings in the table cmd_desc.
 --
 
 -- The aim here is to convert a user file specification (if given) into a 
