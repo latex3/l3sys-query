@@ -339,7 +339,9 @@ end
 -- The aim here is to convert a user file specification (if given) into a 
 -- Lua pattern, and then to do a listing.
 local function ls(spec)
-  local spec = spec or "*"
+  if not spec or spec == "" then
+    spec = "*"
+  end
   -- On Windows, "texlua" will expand globs itself: this can be suppressed by
   -- surrounding with "'". Formally, this only needs one "'" at one end, but
   -- that seems extremely unlikely, so rather strip exactly one pair of
