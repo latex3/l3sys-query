@@ -27,6 +27,14 @@ local script_name = "l3sys-query"
 --
 local cmd_list =
   {
+    ls = 
+      {
+        desc = "Prints a listing based on the <spec> and <options>"
+      },
+    pwd =
+      {
+        desc = "Prints the present working directory"
+      }
   }
 local option_list =
   {
@@ -53,6 +61,9 @@ local stderr = io.stderr
 local lfs        = lfs
 local currentdir = lfs.currentdir
 local dir        = lfs.dir
+
+local os   = os
+local exit = os.exit
 
 local string = string
 local find   = string.find
@@ -279,7 +290,7 @@ do
 end
 
 --
--- The functions for commands
+-- The help functions: local only and hard-coded
 --
 
 local function help()
@@ -336,9 +347,18 @@ local function help()
   print("\n" .. copyright)
 end
 
+local function version()
+  print("\n" .. script_name .. ": " .. script_desc .. "\nRelease " 
+    .. release_date .. "\n" .. copyright)
+end
+
+--
+-- The functions for commands: all called cmd_...()
+--
+
 -- The aim here is to convert a user file specification (if given) into a 
 -- Lua pattern, and then to do a listing.
-local function ls(spec)
+function cmd_ls(spec)
   if not spec or spec == "" then
     spec = "*"
   end
@@ -381,11 +401,29 @@ local function ls(spec)
 end
 
 -- A simple rename
-local function pwd()
+function cmd_pwd()
   return currentdir()
 end
 
-local function version()
-  return "\n" .. script_name .. ": " .. script_desc .. "\nRelease " 
-    .. release_date .. "\n" .. copyright
+--
+-- Execute the given command
+--
+
+-- Only 'known' commands do anything at all
+if cmd == "version" then
+  version()
+  exit(0)
+elseif not cmd_list[cmd] then
+  help()
+  exit(1)
+end
+
+-- See https://stackoverflow.com/a/1791506/212001
+local result = load("return cmd_" .. cmd .. "(...)")(spec)
+
+if result then
+  print(result)
+  exit(0)
+else
+  exit(1)
 end
