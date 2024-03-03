@@ -78,7 +78,8 @@ where \texttt{\meta{cmd}} can be one of the following:
 \end{itemize}
 The \meta{cmd} are described below. The result of the \meta{cmd} will be
 printed to the terminal in an interactive run; in normal usage, this will be
-piped to the calling \TeX{} process.
+piped to the calling \TeX{} process. Results containing path separators
+\emph{always} use~|/|, irrespective of the platform in use.
 
 As well as these targets, the script recognises the options
 \begin{itemize}
