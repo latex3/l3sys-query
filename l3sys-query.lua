@@ -413,7 +413,6 @@ elseif not cmd_impl[cmd] then
   exit(1)
 end
 
-
 local result = cmd_impl[cmd](spec)
 
 if result then
