@@ -157,7 +157,7 @@ local cmd = "help"
 local options = {}
 local spec = ""
 
-do
+local function parse_args()
   -- Turn long/short options into two lookup tables
   local long_options = {}
   local short_options = {}
@@ -288,6 +288,8 @@ do
     end
   end
 end
+
+parse_args()
 
 --
 -- The help functions: local only and hard-coded
