@@ -15,6 +15,13 @@ for those people who are interested.
 --]]
 
 --
+-- Details of the script itself, etc.
+--
+local copyright = "Copyright (C) 2024 The LaTeX Project\n"
+local desc = "l3sys-query: System queries for LaTeX using Lua\n"
+local release_date = "2024-03-03"
+
+--
 -- Local copies of globals used here
 --
 local io     = io
@@ -312,4 +319,8 @@ end
 -- A simple rename
 local function pwd()
   return currentdir()
+end
+
+local function version()
+  return "\n" .. desc .. "\nRelease " .. release_date .. "\n" .. copyright
 end
