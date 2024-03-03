@@ -63,6 +63,35 @@ information is available in modern \TeX{} systems using primitives, and partly
 as the aim of \texttt{l3sys-query} is to provide information where there are
 defined use cases. Requests for additional data interfaces are welcome.
 
+\section{The command line interface}
+
+The command line interface to 
+\begin{center}
+  \ttfamily
+  l3sys-query \meta{cmd} [\meta{option(s)}] [\meta{spec}]
+\end{center}
+where \texttt{\meta{cmd}} can be one of the following:
+\begin{itemize}[noitemsep]\ttfamily
+  \item ls
+  \item ls \meta{spec}
+  \item pwd
+\end{itemize}
+The \meta{cmd} are described below. The result of the \meta{cmd} will be
+printed to the terminal in an interactive run; in normal usage, this will be
+piped to the calling \TeX{} process.
+
+As well as these targets, the script recognises the options
+\begin{itemize}
+\end{itemize}
+The action of these options on the appropriate \meta{cmd(s)} is detailed below.
+
+\section{The \LaTeX{} interface}
+
+Using \texttt{l3sys-query} is not tied to access \emph{via} \pkg{expl3}, but
+this is the preferred approach for the \LaTeX{} Team. Details of how to use
+\texttt{l3sys-query} as an \pkg{expl3} programmer are covered in
+\texttt{interface3.pdf}.
+
 \end{documentation}
 
 \PrintIndex
