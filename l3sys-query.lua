@@ -314,7 +314,7 @@ local function help()
   end
 
   -- 'Header' of fixed info
-  print("Usage: " .. script_name .. " <cmd> [<options>] [<spec>]\n")
+  print("\nUsage: " .. script_name .. " <cmd> [<options>] [<spec>]\n")
   print("Valid targets are:")
 
   -- Sort the commands, pad the descriptions, print
