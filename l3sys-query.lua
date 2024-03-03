@@ -18,8 +18,31 @@ for those people who are interested.
 -- Details of the script itself, etc.
 --
 local copyright = "Copyright (C) 2024 The LaTeX Project\n"
-local desc = "l3sys-query: System queries for LaTeX using Lua\n"
 local release_date = "2024-03-03"
+local script_desc = "System queries for LaTeX using Lua\n"
+local script_name = "l3sys-query"
+
+--
+-- Setup for the CLI: commands and options
+--
+local cmd_list =
+  {
+  }
+local option_list =
+  {
+    help =
+      {
+        desc  = "Prints this message and exits",
+        short = "h",
+        type  = "boolean"
+      },
+    version =
+      {
+        desc = "Prints version information and exits",
+        short = "v",
+        type  = "boolean"
+      }
+  }
 
 --
 -- Local copies of globals used here
@@ -35,11 +58,13 @@ local string = string
 local find   = string.find
 local gmatch = string.gmatch
 local match  = string.match
+local rep    = string.rep
 local sub    = string.sub
 
-local table = table
+local table  = table
 local concat = table.concat
 local insert = table.insert
+local sort   = table.sort
 
 --
 -- Support functions and data
@@ -115,23 +140,6 @@ local function glob_to_pattern(glob)
   end
   return pattern
 end
-
--- Options for the command line
-local option_list =
-  {
-    help =
-      {
-        desc  = "Prints this message and exits",
-        short = "h",
-        type  = "boolean"
-      },
-    version =
-      {
-        desc = "Prints version information and exits",
-        short = "v",
-        type  = "boolean"
-      }
-  }
 
 -- Initial data for the command line parser
 local cmd = "help"
@@ -274,6 +282,60 @@ end
 -- The functions for commands
 --
 
+local function help()
+  -- Find the longest entry to pad
+  local function format_list(list)
+    local longest = 0
+    for k,_ in pairs(list) do
+      if k:len() > longest then
+        longest = k:len()
+      end
+    end
+    -- Sort the list
+    local t = {}
+    for k,_ in pairs(list) do
+      insert(t,k)
+    end
+    sort(t)
+    return t,longest
+  end
+
+  -- 'Header' of fixed info
+  print("Usage: " .. script_name .. " <cmd> [<options>] [<spec>]\n")
+  print("Valid targets are:")
+
+  -- Sort the commands, pad the descriptions, print
+  local t,longest = format_list(cmd_list)
+  for _,k in ipairs(t) do
+    local cmd = cmd_list[k]
+    local filler = rep(" ",longest - k:len() + 1)
+    if cmd.desc then
+      print("   " .. k .. filler .. cmd.desc)
+    end
+  end
+
+  -- Same for the options
+  print("\nValid options are:")
+  t,longest = format_list(option_list)
+  for _,k in ipairs(t) do
+    local opt = option_list[k]
+    local filler = rep(" ",longest - k:len() + 1)
+    if opt.desc then
+      if opt.short then
+        print("   --" .. k .. "|-" .. opt.short .. filler .. opt.desc)
+      else
+        print("   --" .. k .. "   " .. filler .. opt.desc)
+      end
+    end
+  end
+  
+  -- Postamble
+  print("\nFull manual available via 'texdoc " .. script_name .. "'\n.")
+  print("Repository : https://github.com/latex3/" .. script_name)
+  print("Bug tracker: https://github.com/latex3/" .. script_name .. "/issues")
+  print("\n" .. copyright)
+end
+
 -- The aim here is to convert a user file specification (if given) into a 
 -- Lua pattern, and then to do a listing.
 local function ls(spec)
@@ -322,5 +384,6 @@ local function pwd()
 end
 
 local function version()
-  return "\n" .. desc .. "\nRelease " .. release_date .. "\n" .. copyright
+  return "\n" .. script_name .. ": " .. script_desc .. "\nRelease " 
+    .. release_date .. "\n" .. copyright
 end
