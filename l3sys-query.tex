@@ -83,6 +83,7 @@ piped to the calling \TeX{} process. Results containing path separators
 
 As well as these targets, the script recognises the options
 \begin{itemize}
+  \item |--sort| Sets the method used to sort entries returned by |ls|
   \item |--type| Selects the type of entry returned by |ls|
 \end{itemize}
 The action of these options on the appropriate \meta{cmd(s)} is detailed below.
@@ -125,6 +126,10 @@ for example allowing
 \end{verbatim}
 to work. Note that the \emph{entire} \meta{spec} should be surrounded by |'|
 characters to prevent expansion of the~|*|.
+
+The results returned by |ls| can be sorted using the |--sort| option. This
+can be set to |none| (use the order from the file system: the default),
+|name| (sort by file name| or |date| (sort by date last modified).
 
 The listing can be filtered based on the type of entry using the |--type|
 option. This takes a string argument, one of |d| (directory) or |f| (file).

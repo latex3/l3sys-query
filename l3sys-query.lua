@@ -36,6 +36,11 @@ local option_list =
         short = "h",
         type  = "boolean"
       },
+    sort =
+      {
+        desc = "Method used to sort directory listing",
+        type = "string"
+      },
     type = 
       {
         desc  = "Selects the type of entry in a directory listing",
@@ -391,23 +396,50 @@ function cmd_impl.ls(spec)
   if path ~= "." then print_path = path .. "/" end
   -- A lookup table for attributes: map between lfs- and Unix-type naming
   local attrib_map = {d = "dir", f = "file"}
+
+  -- A bit of setup to store the sorting data as well as the entry itself
+  local i = 0 -- If no sorting active, just track the order from lfs
+  local entries = {}
+  local sort_mode = options.sort or "none"
+  local function store(entry)
+    i = i + 1
+    local key = i
+    if sort_mode == "date" then
+      key = attributes(entry,"modification")
+    elseif sort_mode == "name" then
+      key = entry
+    end
+    entries[key] = print_path .. entry
+  end
+  
   -- Build a table of entries, excluding "." and "..", and return as a string
   -- with one entry per line.
-  local t = {}
   for entry in dir(path) do
     if match(entry,pattern) and entry ~= "." and entry ~= ".." then
       local opt = options.type
       if opt then
         local ft = attributes(entry,"mode")
         if ft == attrib_map[opt] then
-          insert(t,print_path .. entry)
+          store(entry)
         end
       else
-        insert(t,print_path .. entry)
+        store(entry)
       end
     end
   end
-  return concat(t,"\n")
+
+  -- Extract keys and sort
+  local s = {}
+  for k,_ in pairs(entries) do
+    insert(s,k)
+    sort(s)
+  end
+  local result = {}
+  for _,v in ipairs(s) do
+      insert(result,entries[v])
+  end
+
+  return concat(result,"\n")
 end
 
 -- A simple rename
