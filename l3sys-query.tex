@@ -115,6 +115,11 @@ platform-neutral way to avoid any expansion.} for example
   l3sys-query ls '*.png'
 \end{verbatim}
 
+Directory entries starting |.| are traditionally hidden on Linux and macOS systems,
+and can be excluded from listings using the |--exclude-dot| option. Note that
+this will skip hidden directories entirely when used with the |--recursive|
+option.
+
 Since \texttt{l3sys-query} is intended primarily for use with restricted shell
 escape calls from \TeX{} processes, handling of spaces is unusual. It is not
 possible to quote spaces in such a call, so for example whilst

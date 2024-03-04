@@ -30,6 +30,11 @@ local cmd_desc = {}
 
 local option_list =
   {
+    ["exclude-dot"] =
+      {
+        desc = 'Skips over entires starting "." (Unix-hidden)',
+        type = "boolean"
+      },
     help =
       {
         desc  = "Prints this message and exits",
@@ -431,11 +436,13 @@ function cmd_impl.ls(spec)
 
   -- Build a table of entries, excluding "." and "..", and return as a string
   -- with one entry per line.
+  local nodot = options["exclude-dot"]
   local opt = options.type
   local rec = options.recursive
   local function browse(path)
     for entry in dir(path) do
-      if entry ~= "." and entry ~= ".." then
+      if entry ~= "." and entry ~= ".." 
+        and not (nodot and match(entry,"^%.")) then
         local entry = path .. "/" .. entry
         local ft = attributes(entry,"mode")
         if not opt or ft == attrib_map[opt] then
