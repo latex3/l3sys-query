@@ -36,6 +36,12 @@ local option_list =
         short = "h",
         type  = "boolean"
       },
+    recursive =
+      {
+        desc  = "Activates recursive directory listing",
+        short = "r",
+        type  = "boolean"
+      },
     sort =
       {
         desc = "Method used to sort directory listing",
@@ -389,19 +395,21 @@ function cmd_impl.ls(spec)
     path = "."
     glob = spec
   end
+  if path == "" then
+    path = "."
+  end
   local pattern = glob_to_pattern(glob)
-  -- So that files have the appropriate partial path at the start in all cases,
-  -- define a printing path that can always be used.
-  local print_path = ""
-  if path ~= "." then print_path = path .. "/" end
   -- A lookup table for attributes: map between lfs- and Unix-type naming
-  local attrib_map = {d = "dir", f = "file"}
+  local attrib_map = {d = "directory", f = "file"}
 
   -- A bit of setup to store the sorting data as well as the entry itself
   local i = 0 -- If no sorting active, just track the order from lfs
   local entries = {}
   local sort_mode = options.sort or "none"
-  local function store(entry)
+  local function store(entry,path)
+    if not match(entry,pattern) then
+      return
+    end
     i = i + 1
     local key = i
     if sort_mode == "date" then
@@ -409,24 +417,29 @@ function cmd_impl.ls(spec)
     elseif sort_mode == "name" then
       key = entry
     end
-    entries[key] = print_path .. entry
+    entries[key] = entry
   end
-  
+
   -- Build a table of entries, excluding "." and "..", and return as a string
   -- with one entry per line.
-  for entry in dir(path) do
-    if match(entry,pattern) and entry ~= "." and entry ~= ".." then
-      local opt = options.type
-      if opt then
+  local opt = options.type
+  local rec = options.recursive
+  local function browse(path)
+    for entry in dir(path) do
+      if entry ~= "." and entry ~= ".." then
+        local entry = path .. "/" .. entry
         local ft = attributes(entry,"mode")
         if ft == attrib_map[opt] then
-          store(entry)
+          store(entry,path)
         end
-      else
-        store(entry)
+        if rec and ft == "directory" then
+          browse(entry)
+        end
       end
     end
   end
+  -- Start a search at the top level
+  browse(path)
 
   -- Extract keys and sort
   local s = {}

@@ -83,6 +83,8 @@ piped to the calling \TeX{} process. Results containing path separators
 
 As well as these targets, the script recognises the options
 \begin{itemize}
+  \item |--recursive| (|-r|) Enables recursive searching during directory
+    listings
   \item |--sort| Sets the method used to sort entries returned by |ls|
   \item |--type| Selects the type of entry returned by |ls|
 \end{itemize}
@@ -97,9 +99,10 @@ options.
 
 When no \meta{spec} is given, all entries in the current directory will be
 listed, one per line in the output. This will include both files and
-subdirectories. The order of results will be determined by the underlying
-operating system process: unless requested \emph{via} an option, no sorting
-takes place.
+subdirectories. Each entry will include a path relative to the current
+directory: for files \emph{in} the current directory, this will be |./|. The
+order of results will be determined by the underlying operating system process:
+unless requested \emph{via} an option, no sorting takes place.
 
 As standard, the \meta{spec} is treated as a file glob, for example |*.png|. To
 prevent wildcards in such globs from being expanded at the wrong time, they
@@ -133,6 +136,10 @@ can be set to |none| (use the order from the file system: the default),
 
 The listing can be filtered based on the type of entry using the |--type|
 option. This takes a string argument, one of |d| (directory) or |f| (file).
+
+As standard, only the path specified as part of the \meta{spec} is queried.
+However, if the |--recursive| (|-r|) option is set, the query is applied within
+all subdirectories.
 
 For security reasons, only paths within the current working directory can be
 queried, this for example |graphics/*.png| will list all |png| files in the
