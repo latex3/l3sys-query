@@ -85,6 +85,8 @@ As well as these targets, the script recognises the options
 \begin{itemize}
   \item |--recursive| (|-r|) Enables recursive searching during directory
     listings
+  \item |--reverse-sort| Causes sorting to go from highest to lowest rather
+    than lowest to highest
   \item |--sort| Sets the method used to sort entries returned by |ls|
   \item |--type| Selects the type of entry returned by |ls|
 \end{itemize}
@@ -132,7 +134,8 @@ characters to prevent expansion of the~|*|.
 
 The results returned by |ls| can be sorted using the |--sort| option. This
 can be set to |none| (use the order from the file system: the default),
-|name| (sort by file name or |date| (sort by date last modified).
+|name| (sort by file name or |date| (sort by date last modified). The sorting
+order can be reversed using |--reverse-sort|.
 
 The listing can be filtered based on the type of entry using the |--type|
 option. This takes a string argument, one of |d| (directory) or |f| (file).

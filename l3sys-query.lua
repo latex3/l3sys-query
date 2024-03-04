@@ -42,6 +42,11 @@ local option_list =
         short = "r",
         type  = "boolean"
       },
+    ["reverse-sort"] =
+      {
+        desc = "Reversing sorting order",
+        type = "boolean"
+      },
     sort =
       {
         desc = "Method used to sort directory listing",
@@ -450,7 +455,11 @@ function cmd_impl.ls(spec)
   for k,_ in pairs(entries) do
     insert(s,k)
   end
-  sort(s)
+  if options["reverse-sort"] then
+    sort(s,function(a,b) return a > b end)
+  else
+    sort(s)
+  end
 
   local result = {}
   for _,v in ipairs(s) do
