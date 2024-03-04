@@ -1,0 +1,41 @@
+# The test framework itself
+l3build
+#
+# The basics: LaTeX 'required' set
+#
+amsmath
+graphics
+latex-bin
+tools
+#
+# Assuming a 'basic' font set up, metafont is required to avoid
+# warnings with some packages and errors with others
+#
+metafont
+mfware
+#
+# Core font-related stuffs
+#
+dvips
+ec
+#
+# Dependencies of l3doc, etc.
+#
+alphalph
+amsfonts
+booktabs
+colortbl
+csquotes
+enumitem
+fancyvrb
+hologo
+hypdoc
+hyperref
+iftex
+infwarerr
+kvoptions
+makeindex
+pdftexcmds
+psnfss
+times
+underscore
