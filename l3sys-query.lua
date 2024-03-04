@@ -391,12 +391,16 @@ function cmd_impl.ls(spec)
     return
   end
   -- Tidy up and convert to a pattern.
+  path,glob = match(spec,"^(.*)/([^/]*)$")
   if not path then
     path = "."
     glob = spec
   end
   if path == "" then
     path = "."
+  end
+  if not match(path,"^%.") then
+    path = "./" .. path
   end
   local pattern = glob_to_pattern(glob)
   -- A lookup table for attributes: map between lfs- and Unix-type naming
