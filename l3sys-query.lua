@@ -429,7 +429,7 @@ function cmd_impl.ls(spec)
       if entry ~= "." and entry ~= ".." then
         local entry = path .. "/" .. entry
         local ft = attributes(entry,"mode")
-        if ft == attrib_map[opt] then
+        if not opt or ft == attrib_map[opt] then
           store(entry,path)
         end
         if rec and ft == "directory" then
