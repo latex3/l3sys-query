@@ -35,6 +35,11 @@ local option_list =
         desc = 'Skips over entires starting "." (Unix-hidden)',
         type = "boolean"
       },
+    ["ignore-case"] =
+      {
+        desc = "Ignore case when sorting directory listing",
+        type = "boolean"
+      },
     help =
       {
         desc  = "Prints this message and exits",
@@ -87,6 +92,7 @@ local exit = os.exit
 local string = string
 local find   = string.find
 local gmatch = string.gmatch
+local lower  = string.lower
 local match  = string.match
 local rep    = string.rep
 local sub    = string.sub
@@ -462,10 +468,21 @@ function cmd_impl.ls(spec)
   for k,_ in pairs(entries) do
     insert(s,k)
   end
+
+  -- Setup for case-insensitve sorting
+  local function case(s)
+      return s
+  end
+  if options["ignore-case"] then
+    function case(s)
+      return lower(s)
+    end
+  end
+
   if options["reverse-sort"] then
-    sort(s,function(a,b) return a > b end)
+    sort(s,function(a,b) return case(a) > case(b) end)
   else
-    sort(s)
+    sort(s,function(a,b) return case(a) < case(b) end)
   end
 
   local result = {}
