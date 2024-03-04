@@ -360,7 +360,7 @@ local function help()
   end
   
   -- Postamble
-  print("\nFull manual available via 'texdoc " .. script_name .. "'\n.")
+  print("\nFull manual available via 'texdoc " .. script_name .. "'.\n")
   print("Repository : https://github.com/latex3/" .. script_name)
   print("Bug tracker: https://github.com/latex3/" .. script_name .. "/issues")
   print("\n" .. copyright)
