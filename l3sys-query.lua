@@ -449,8 +449,9 @@ function cmd_impl.ls(spec)
   local s = {}
   for k,_ in pairs(entries) do
     insert(s,k)
-    sort(s)
   end
+  sort(s)
+
   local result = {}
   for _,v in ipairs(s) do
       insert(result,entries[v])
