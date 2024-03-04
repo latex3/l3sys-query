@@ -8,7 +8,7 @@ File l3sys-query.lua Copyright (C) 2024 The LaTeX Project
 
 The development version of the bundle can be found at
 
-   https://github.com/latex3/lsys-query
+   https://github.com/latex3/l3sys-query
 
 for those people who are interested.
 
