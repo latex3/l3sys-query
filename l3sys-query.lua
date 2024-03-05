@@ -30,15 +30,15 @@ local cmd_desc = {}
 
 local option_list =
   {
+    all =
+      {
+        desc = "Include 'dot' entries in directory listing",
+        type = "boolean"
+      }
     exclude =
       {
         desc = "Exclude entries from directory listing",
         type = "string"
-      },
-    ["exclude-dot"] =
-      {
-        desc = 'Skips over entries starting "." (Unix-hidden)',
-        type = "boolean"
       },
     ["ignore-case"] =
       {
@@ -452,13 +452,13 @@ function cmd_impl.ls(spec)
 
   -- Build a table of entries, excluding "." and "..", and return as a string
   -- with one entry per line.
-  local is_nodot = options["exclude-dot"]
+  local is_all = options.all
   local opt = options.type
   local is_rec = options.recursive
   local function browse(path)
     for entry in dir(path) do
       if entry ~= "." and entry ~= ".." 
-        and not (is_nodot and match(entry,"^%.")) then
+        and not (is_all and match(entry,"^%.")) then
         local entry = path .. "/" .. entry
         local ft = attributes(entry,"mode")
         if not opt or ft == attrib_map[opt] then

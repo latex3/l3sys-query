@@ -83,8 +83,8 @@ piped to the calling \TeX{} process. Results containing path separators
 
 As well as these targets, the script recognizes the options
 \begin{itemize}
+  \item |--all| Include \enquote{dot} entries in directory listings
   \item |--exclude| Specification for directory entries to exclude
-  \item |--exclude-dot| Exclude \enquote{dot} entries from directory listings
   \item |--ignore-case| Ignores case when sorting directory listings
   \item |--recursive| (|-r|) Enables recursive searching during directory
     listings
@@ -122,11 +122,10 @@ which should be given with a \meta{spec}, for example
 \begin{verbatim}
   l3sys-query ls --exclude '*.bak' 'graphics/*'
 \end{verbatim}
-Removal of entr
-Directory entries starting |.| are traditionally hidden on Linux and macOS systems,
-and can be excluded from listings using the |--exclude-dot| option. Note that
-this will skip hidden directories entirely when used with the |--recursive|
-option.
+Directory entries starting |.| are traditionally hidden on Linux and macOS
+systems: these \enquote{dot} entries are excluded unless the |--all| option is
+set. Note that this will skip hidden directories entirely when used with the
+|--recursive| option.
 
 Since \texttt{l3sys-query} is intended primarily for use with restricted shell
 escape calls from \TeX{} processes, handling of spaces is unusual. It is not
