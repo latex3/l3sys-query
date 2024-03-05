@@ -24,6 +24,11 @@ The issue tracker for LaTeX is currently located
 
 This code is developed by [The LaTeX Project](https://latex-project.org).
 
+## License
+
+This project licensed under the same terms as Lua (MIT): see LICENSE or the top
+of source files for the legal text.
+
 -----
 
 <p>Copyright (C) 2024 The LaTeX Project <br />
