@@ -34,7 +34,7 @@ local option_list =
       {
         desc = "Include 'dot' entries in directory listing",
         type = "boolean"
-      }
+      },
     exclude =
       {
         desc = "Exclude entries from directory listing",
