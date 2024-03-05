@@ -17,7 +17,7 @@ function  docinit_hook()
   local date_start,date_end = find(readme,"%d%d%d%d%p%d%d%p%d%d")
 
   local man_t = {}
-  insert(man_t,'.TH L3SYS-QUERY 1 "' .. readme:sub(date_start,date_end) .. '" "LaTeX3"\n')
+  insert(man_t,'.TH L3SYS-QUERY 1 "' .. readme:sub(date_start,date_end) .. '" "LaTeX"\n')
   insert(man_t,(".SH NAME\n" .. module .. "\n"))
   insert(man_t,(".SH SYNOPSIS\n Usage " .. module .. "<cmd> [<options>] [<spec>]\n"))
   insert(man_t,".SH DESCRIPTION")
