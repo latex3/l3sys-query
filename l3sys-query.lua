@@ -353,14 +353,14 @@ local function help()
   -- Same for the options
   print("\nValid options are:")
   t,longest = format_list(option_list)
-  for _,k in ipairs(t) do
-    local opt = option_list[k]
-    local filler = rep(" ",longest - k:len() + 1)
+  for _,name in ipairs(t) do
+    local opt = option_list[name]
+    local filler = rep(" ",longest - name:len() + 1)
     if opt.desc then
       if opt.short then
-        print("   --" .. k .. "|-" .. opt.short .. filler .. opt.desc)
+        print("   --" .. name .. "|-" .. opt.short .. filler .. opt.desc)
       else
-        print("   --" .. k .. "   " .. filler .. opt.desc)
+        print("   --" .. name .. "   " .. filler .. opt.desc)
       end
     end
   end
