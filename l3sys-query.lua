@@ -32,7 +32,7 @@ local option_list =
   {
     ["exclude-dot"] =
       {
-        desc = 'Skips over entires starting "." (Unix-hidden)',
+        desc = 'Skips over entries starting "." (Unix-hidden)',
         type = "boolean"
       },
     ["ignore-case"] =
