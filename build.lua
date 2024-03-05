@@ -37,6 +37,7 @@ function mkman()
   :gsub("Valid targets",".SH COMMANDS\nValid targets")
   :gsub("Valid options",".SH OPTIONS\nValid options")
   :gsub("Full manual",'.SH "SEE ALSO"\nFull manual')
+  :gsub("Bug tracker","\nBug tracker")
   :gsub("Copyright",".SH AUTHORS\nCopyright")))
 
   f = assert(open(module .. ".1","wb"))
