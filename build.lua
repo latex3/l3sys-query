@@ -7,7 +7,7 @@ typesetfiles = {"l3sys-query.tex"}
 unpackfiles = {}
 
 -- Auto-generate a .1 file from the help
-function mkman()
+function  docinit_hook()
   local find = string.find
   local insert = table.insert
   local open = io.open
@@ -43,11 +43,5 @@ function mkman()
   f = assert(open(module .. ".1","wb"))
   f:write((table.concat(man_t,"\n"):gsub("\n$","")))
   f:close()
+  return 0
 end
-
-target_list = target_list or { }
-target_list.mkman =
-  {
-    func = mkman,
-    desc = "Generate a man (.1) file from help output"
-  }

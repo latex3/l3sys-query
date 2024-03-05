@@ -5,6 +5,7 @@ build/*
 
 *.*~
 
+*.1
 *.aux
 *.bbl
 *.glo
