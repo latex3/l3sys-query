@@ -442,19 +442,19 @@ function cmd_impl.ls(spec)
 
   -- Build a table of entries, excluding "." and "..", and return as a string
   -- with one entry per line.
-  local nodot = options["exclude-dot"]
+  local is_nodot = options["exclude-dot"]
   local opt = options.type
-  local rec = options.recursive
+  local is_rec = options.recursive
   local function browse(path)
     for entry in dir(path) do
       if entry ~= "." and entry ~= ".." 
-        and not (nodot and match(entry,"^%.")) then
+        and not (is_nodot and match(entry,"^%.")) then
         local entry = path .. "/" .. entry
         local ft = attributes(entry,"mode")
         if not opt or ft == attrib_map[opt] then
           store(entry,path)
         end
-        if rec and ft == "directory" then
+        if is_rec and ft == "directory" then
           browse(entry)
         end
       end
