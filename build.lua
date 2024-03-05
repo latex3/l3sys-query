@@ -36,7 +36,7 @@ function mkman()
   insert(man_t,(help_text:gsub("\nUsage.*spec>]\n\n","")
   :gsub("Valid targets",".SH COMMANDS\nValid targets")
   :gsub("Valid options",".SH OPTIONS\nValid options")
-  :gsub("Full manual",'SH "SEE ALSO"\nFull manual')
+  :gsub("Full manual",'.SH "SEE ALSO"\nFull manual')
   :gsub("Copyright",".SH AUTHORS\nCopyright")))
 
   f = assert(open(module .. ".1","wb"))
