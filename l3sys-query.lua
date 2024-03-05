@@ -30,6 +30,11 @@ local cmd_desc = {}
 
 local option_list =
   {
+    exclude =
+      {
+        desc = "Exclude entries from directory listing",
+        type = "string"
+      },
     ["exclude-dot"] =
       {
         desc = 'Skips over entries starting "." (Unix-hidden)',
@@ -419,6 +424,10 @@ function cmd_impl.ls(spec)
     path = "./" .. path
   end
   local pattern = glob_to_pattern(glob)
+  local exclude_pattern
+  if options.exclude then
+    exclude_pattern = glob_to_pattern(options.exclude)
+  end
   -- A lookup table for attributes: map between lfs- and Unix-type naming
   local attrib_map = {d = "directory", f = "file"}
 
@@ -427,7 +436,8 @@ function cmd_impl.ls(spec)
   local entries = {}
   local sort_mode = options.sort or "none"
   local function store(entry,path)
-    if not match(entry,pattern) then
+    if not match(entry,pattern)
+      or (exclude_pattern and match(entry,exclude_pattern)) then
       return
     end
     i = i + 1

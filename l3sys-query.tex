@@ -83,6 +83,7 @@ piped to the calling \TeX{} process. Results containing path separators
 
 As well as these targets, the script recognizes the options
 \begin{itemize}
+  \item |--exclude| Specification for directory entries to exclude
   \item |--exclude-dot| Exclude \enquote{dot} entries from directory listings
   \item |--ignore-case| Ignores case when sorting directory listings
   \item |--recursive| (|-r|) Enables recursive searching during directory
@@ -116,7 +117,12 @@ platform-neutral way to avoid any expansion.} for example
 \begin{verbatim}
   l3sys-query ls '*.png'
 \end{verbatim}
-
+Removal of entries from the listing can be achieved using the |--exclude| option,
+which should be given with a \meta{spec}, for example
+\begin{verbatim}
+  l3sys-query ls --exclude '*.bak' 'graphics/*'
+\end{verbatim}
+Removal of entr
 Directory entries starting |.| are traditionally hidden on Linux and macOS systems,
 and can be excluded from listings using the |--exclude-dot| option. Note that
 this will skip hidden directories entirely when used with the |--recursive|
