@@ -457,8 +457,8 @@ function cmd_impl.ls(spec)
   local is_rec = options.recursive
   local function browse(path)
     for entry in dir(path) do
-      if entry ~= "." and entry ~= ".." 
-        and not (is_all and match(entry,"^%.")) then
+      if entry ~= "." and entry ~= ".."
+        and (is_all or not match(entry,"^%.")) then
         local entry = path .. "/" .. entry
         local ft = attributes(entry,"mode")
         if not opt or ft == attrib_map[opt] then
