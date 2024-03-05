@@ -34,7 +34,7 @@ function mkman()
   f:close()
 
   insert(man_t,(help_text:gsub("\nUsage.*spec>]\n\n","")
-  :gsub("Valid targets",".SH COMMANDS\nValid targets")
+  :gsub("Valid commands",".SH COMMANDS\nValid commands")
   :gsub("Valid options",".SH OPTIONS\nValid options")
   :gsub("Full manual",'.SH "SEE ALSO"\nFull manual')
   :gsub("Bug tracker","\nBug tracker")
