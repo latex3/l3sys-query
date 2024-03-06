@@ -104,6 +104,10 @@ local option_list =
 local io     = io
 local stderr = io.stderr
 
+local kpse             = kpse
+local set_program_name = kpse.set_program_name
+local var_value        = kpse.var_value
+
 local lfs        = lfs
 local attributes = lfs.attributes
 local currentdir = lfs.currentdir
@@ -124,6 +128,17 @@ local table  = table
 local concat = table.concat
 local insert = table.insert
 local sort   = table.sort
+
+--
+-- Read security settings
+--
+
+set_program_name("kpsewhich")
+local is_paranoid = false
+local open_mode = var_value("openin_any")
+if open_mode and open_mode ~= "a" then
+  is_paranoid = true
+end
 
 --
 -- Support functions and data
@@ -451,7 +466,7 @@ function cmd_impl.ls(spec)
 
   -- Build a table of entries, excluding "." and "..", and return as a string
   -- with one entry per line.
-  local is_all = options.all
+  local is_all = options.all and not is_paranoid
   local opt = options.type
   local is_rec = options.recursive
   local function browse(path)
