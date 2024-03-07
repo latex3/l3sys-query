@@ -50,16 +50,19 @@ local option_list =
   {
     all =
       {
+        cmds = {"ls"},
         desc = "Include 'dot' entries in directory listing",
         type = "boolean"
       },
     exclude =
       {
+        cmds = {"ls"},
         desc = "Exclude entries from directory listing",
         type = "string"
       },
     ["ignore-case"] =
       {
+        cmds = {"ls"},
         desc = "Ignore case when sorting directory listing",
         type = "boolean"
       },
@@ -71,22 +74,26 @@ local option_list =
       },
     recursive =
       {
+        cmds  = {"ls"},
         desc  = "Activates recursive directory listing",
         short = "r",
         type  = "boolean"
       },
     ["reverse-sort"] =
       {
+        cmds = {"ls"},
         desc = "Reversing sorting order",
         type = "boolean"
       },
     sort =
       {
+        cmds = {"ls"},
         desc = "Method used to sort directory listing",
         type = "string"
       },
     type = 
       {
+        cmds = {"ls"},
         desc  = "Selects the type of entry in a directory listing",
         type  = "string"
       },
@@ -196,6 +203,12 @@ local function glob_to_pattern(glob)
   return pattern
 end
 
+-- A short auxiliary used whever the script bails out
+local function more_info()
+  stderr:write("Try '" .. script_name .. " --help' for more information.")
+  exit(1)
+end
+
 -- Initial data for the command line parser
 local cmd = ""
 local options = {}
@@ -279,12 +292,6 @@ local function parse_args()
         end
       end
 
-      -- A short auxiliary
-      local function moreinfo()
-        stderr:write("Try '" .. script_name .. " --help' for more information.")
-        exit(1)
-      end
-
       -- Now check that the option is valid and sort out the argument
       -- if required
       local optname = opts[opt]
@@ -294,21 +301,21 @@ local function parse_args()
           if optarg then
             local opt = "-" .. (match(a,"^%-%-") and "-" or "") .. opt
             stderr:write("Value not allowed for option " .. opt .. "\n")
-            moreinfo()
+            more_info()
           end
         else
           if not optarg then
             optarg = arg[i + 1]
             if not optarg then
               stderr:write("Missing value for option " .. a .. "\n")
-              moreinfo()
+              more_info()
             end
             i = i + 1
           end
         end
       else
         stderr:write("Unknown option " .. a .. "\n")
-        moreinfo()
+        more_info()
       end
 
       -- Store the result
@@ -541,6 +548,28 @@ elseif not cmd_impl[cmd] then
       " command. See '" .. script_name .. " --help'.")
   end
   exit(1)
+end
+
+-- Check options are valid for cmd
+for k,_ in pairs(options) do
+  local cmds = option_list[k].cmds
+  if not cmds then
+    -- Should not be possible:
+    -- everything except --help and --version should have an entry
+    print("Internal error")
+    exit(1)
+  else
+    -- Make a lookup table
+    local t = {}
+    for _,v in pairs(cmds) do
+      t[v] = true
+    end
+    if not t[cmd] then
+      stderr:write(script_name .. ": Option '" .. k .. 
+        "' does not apply to '"  .. cmd .. "'\n")
+      more_info()
+    end
+  end
 end
 
 local result = cmd_impl[cmd](spec)
