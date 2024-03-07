@@ -197,7 +197,7 @@ local function glob_to_pattern(glob)
 end
 
 -- Initial data for the command line parser
-local cmd = "help"
+local cmd = ""
 local options = {}
 local spec = ""
 
@@ -531,7 +531,12 @@ if cmd == "version" then
   version()
   exit(0)
 elseif not cmd_impl[cmd] then
-  help()
+  if cmd == "" then
+    help()
+  else
+    stderr:write(script_name .. ": '" .. cmd .. "' is not a " .. script_name ..
+      " command. See '" .. script_name .. " --help'.")
+  end
   exit(1)
 end
 
