@@ -279,6 +279,12 @@ local function parse_args()
         end
       end
 
+      -- A short auxiliary
+      local function moreinfo()
+        stderr:write("Try '" .. script_name .. " --help' for more information.")
+        exit(1)
+      end
+
       -- Now check that the option is valid and sort out the argument
       -- if required
       local optname = opts[opt]
@@ -288,24 +294,21 @@ local function parse_args()
           if optarg then
             local opt = "-" .. (match(a,"^%-%-") and "-" or "") .. opt
             stderr:write("Value not allowed for option " .. opt .. "\n")
-            cmd = "help"
-            return
+            moreinfo()
           end
         else
           if not optarg then
             optarg = arg[i + 1]
             if not optarg then
               stderr:write("Missing value for option " .. a .. "\n")
-              cmd = "help"
-              return
+              moreinfo()
             end
             i = i + 1
           end
         end
       else
         stderr:write("Unknown option " .. a .. "\n")
-        cmd = "help"
-        return
+        moreinfo()
       end
 
       -- Store the result
