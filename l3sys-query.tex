@@ -94,10 +94,10 @@ where \texttt{\meta{cmd}} can be one of the following:
   \item ls \meta{spec}
   \item pwd
 \end{itemize}
-The \meta{cmd} are described below. The result of the \meta{cmd} will be
-printed to the terminal in an interactive run; in normal usage, this will be
-piped to the calling \TeX{} process. Results containing path separators
-\emph{always} use~|/|, irrespective of the platform in use.
+The \meta{cmd} are described below. The result of the \meta{cmd} will be printed
+to the terminal in an interactive run; in normal usage, this will be piped to
+the calling \TeX{} process. Results containing path separators \emph{always}
+use~|/|, irrespective of the platform in use.
 
 As well as these targets, the script recognizes the options
 \begin{itemize}
@@ -135,8 +135,8 @@ platform-neutral way to avoid any expansion.} for example
 \begin{verbatim}
   l3sys-query ls '*.png'
 \end{verbatim}
-Removal of entries from the listing can be achieved using the |--exclude| option,
-which should be given with a \meta{spec}, for example
+Removal of entries from the listing can be achieved using the |--exclude|
+option, which should be given with a \meta{spec}, for example
 \begin{verbatim}
   l3sys-query ls --exclude '*.bak' 'graphics/*'
 \end{verbatim}
@@ -162,11 +162,11 @@ for example allowing
 to work. Note that the \emph{entire} \meta{spec} should be surrounded by |'|
 characters to prevent expansion of the~|*|.
 
-The results returned by |ls| can be sorted using the |--sort| option. This
-can be set to |none| (use the order from the file system: the default),
-|name| (sort by file name) or |date| (sort by date last modified). The sorting
-order can be reversed using |--reverse-sort|. Sorting normally takes account
-of case: this can be suppressed with the |--ignore-case| option.
+The results returned by |ls| can be sorted using the |--sort| option. This can
+be set to |none| (use the order from the file system: the default), |name| (sort
+by file name) or |date| (sort by date last modified). The sorting order can be
+reversed using |--reverse-sort|. Sorting normally takes account of case: this
+can be suppressed with the |--ignore-case| option.
 
 The listing can be filtered based on the type of entry using the |--type|
 option. This takes a string argument, one of |d| (directory) or |f| (file).
