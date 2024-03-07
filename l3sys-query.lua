@@ -205,7 +205,7 @@ end
 
 -- A short auxiliary used whever the script bails out
 local function more_info()
-  stderr:write("Try '" .. script_name .. " --help' for more information.")
+  stderr:write("Try '" .. script_name .. " --help' for more information.\n")
   exit(1)
 end
 
