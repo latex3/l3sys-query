@@ -368,7 +368,7 @@ local function help()
   end
 
   -- 'Header' of fixed info
-  print("Usage: " .. script_name .. " <cmd> [<options>] [<spec>]\n")
+  print("Usage: " .. script_name .. " <cmd> [<options>] [<args>]\n")
   print("Valid  <cmd>s are:")
 
   -- Sort the commands, pad the descriptions, print
@@ -412,7 +412,7 @@ end
 
 -- The aim here is to convert a user file specification (if given) into a 
 -- Lua pattern, and then to do a listing.
-cmd_desc.ls = "Prints a listing based on the <spec> and <options>"
+cmd_desc.ls = "Prints a listing based on the <args> and <options>"
 function cmd_impl.ls(spec)
   if not spec or spec == "" then
     spec = "*"

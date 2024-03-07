@@ -86,12 +86,12 @@ defined use cases. Requests for additional data interfaces are welcome.
 The command line interface to 
 \begin{center}
   \ttfamily
-  l3sys-query \meta{cmd} [\meta{option(s)}] [\meta{spec}]
+  l3sys-query \meta{cmd} [\meta{option(s)}] [\meta{args}]
 \end{center}
 where \texttt{\meta{cmd}} can be one of the following:
 \begin{itemize}[noitemsep]\ttfamily
   \item ls
-  \item ls \meta{spec}
+  \item ls \meta{args}
   \item pwd
 \end{itemize}
 The \meta{cmd} are described below. The result of the \meta{cmd} will be printed
@@ -113,21 +113,21 @@ As well as these targets, the script recognizes the options
 \end{itemize}
 The action of these options on the appropriate \meta{cmd(s)} is detailed below.
 
-\subsection{\texttt{ls [\meta{spec}]}}
+\subsection{\texttt{ls [\meta{args}]}}
 
 Lists the contents of one or more directories, in a manner somewhat reminiscent
 of the Unix command |ls| or the Windows command |dir|. The exact nature of the
-output will depend on the \meta{spec}, if given, along with the prevailing
+output will depend on the \meta{args}, if given, along with the prevailing
 options.
 
-When no \meta{spec} is given, all entries in the current directory will be
+When no \meta{args} are given, all entries in the current directory will be
 listed, one per line in the output. This will include both files and
 subdirectories. Each entry will include a path relative to the current
 directory: for files \emph{in} the current directory, this will be |./|. The
 order of results will be determined by the underlying operating system process:
 unless requested \emph{via} an option, no sorting takes place.
 
-As standard, the \meta{spec} is treated as a file glob, for example |*.png|. To
+As standard, the \meta{args} are treated as a file glob, for example |*.png|. To
 prevent wildcards in such globs from being expanded at the wrong time, they
 should always be surround by |'| characters,\footnote{On Windows, the shell does
 not expand globs, but \texttt{texlua} does: using \texttt{'} is a
@@ -136,7 +136,7 @@ platform-neutral way to avoid any expansion.} for example
   l3sys-query ls '*.png'
 \end{verbatim}
 Removal of entries from the listing can be achieved using the |--exclude|
-option, which should be given with a \meta{spec}, for example
+option, which should be given with a \meta{xarg}, for example
 \begin{verbatim}
   l3sys-query ls --exclude '*.bak' 'graphics/*'
 \end{verbatim}
@@ -154,12 +154,12 @@ possible to quote spaces in such a call, so for example whilst
 does work from the command prompt to find all files with names starting
 \verb*|foo |, it would not work \emph{via} restricted shell escape. To
 circumvent this, \texttt{l3sys-query} will collect all command line arguments
-after any \meta{options}, and combine these as a space-separated \meta{spec},
+after any \meta{options}, and combine these as a space-separated \meta{args},
 for example allowing
 \begin{verbatim}
   l3sys-query ls 'foo *'
 \end{verbatim}
-to work. Note that the \emph{entire} \meta{spec} should be surrounded by |'|
+to work. Note that the \emph{entire} \meta{args} should be surrounded by |'|
 characters to prevent expansion of the~|*|.
 
 The results returned by |ls| can be sorted using the |--sort| option. This can
@@ -171,7 +171,7 @@ can be suppressed with the |--ignore-case| option.
 The listing can be filtered based on the type of entry using the |--type|
 option. This takes a string argument, one of |d| (directory) or |f| (file).
 
-As standard, only the path specified as part of the \meta{spec} is queried.
+As standard, only the path specified as part of the \meta{args} is queried.
 However, if the |--recursive| (|-r|) option is set, the query is applied within
 all subdirectories.
 
