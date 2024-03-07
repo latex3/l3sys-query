@@ -127,11 +127,12 @@ directory: for files \emph{in} the current directory, this will be |./|. The
 order of results will be determined by the underlying operating system process:
 unless requested \emph{via} an option, no sorting takes place.
 
-As standard, the \meta{args} are treated as a file glob, for example |*.png|. To
-prevent wildcards in such globs from being expanded at the wrong time, they
-should always be surround by |'| characters,\footnote{On Windows, the shell does
-not expand globs, but \texttt{texlua} does: using \texttt{'} is a
-platform-neutral way to avoid any expansion.} for example
+As standard, the \meta{args} are treated as a file/path name potentially
+including |?| and |*| as wildcards, for example |*.png| or |file?.txt|. To
+prevent wildcards from being expanded at the wrong time, they should always be
+surround by |'| characters,\footnote{On Windows, the shell does not expand
+wildcards, but \texttt{texlua} does: using \texttt{'} is a platform-neutral way
+to avoid any expansion.} for example
 \begin{verbatim}
   l3sys-query ls '*.png'
 \end{verbatim}
