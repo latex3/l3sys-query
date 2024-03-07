@@ -392,8 +392,7 @@ local function help()
 end
 
 local function version()
-  print(script_name .. ": " .. script_desc .. "\nRelease " 
-    .. release_date .. "\n" .. copyright)
+  print(script_name .. " " .. release_date)
 end
 
 --
