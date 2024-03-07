@@ -462,7 +462,7 @@ function cmd_impl.ls(arg_list)
   local i = 0 -- If no sorting active, just track the order from lfs
   local entries = {}
   local sort_mode = options.sort or "none"
-  local function store(entry,path)
+  local function store(entry,full_entry)
     if not match(entry,pattern)
       or (exclude_pattern and match(entry,exclude_pattern)) then
       return
@@ -470,11 +470,11 @@ function cmd_impl.ls(arg_list)
     i = i + 1
     local key = i
     if sort_mode == "date" then
-      key = attributes(entry,"modification")
+      key = attributes(full_entry,"modification")
     elseif sort_mode == "name" then
-      key = entry
+      key = full_entry
     end
-    entries[key] = entry
+    entries[key] = full_entry
   end
 
   -- Build a table of entries, excluding "." and "..", and return as a string
@@ -486,13 +486,13 @@ function cmd_impl.ls(arg_list)
     for entry in dir(path) do
       if entry ~= "." and entry ~= ".."
         and (is_all or not match(entry,"^%.")) then
-        local entry = path .. "/" .. entry
-        local ft = attributes(entry,"mode")
+        local full_entry = path .. "/" .. entry
+        local ft = attributes(full_entry,"mode")
         if not opt or ft == attrib_map[opt] then
-          store(entry,path)
+          store(entry,full_entry)
         end
         if is_rec and ft == "directory" then
-          browse(entry)
+          browse(full_entry)
         end
       end
     end
