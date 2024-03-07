@@ -35,7 +35,7 @@ for those people who are interested.
 --
 -- Details of the script itself, etc.
 --
-local copyright = "Copyright (C) 2024 The LaTeX Project\n"
+local copyright = "Copyright (C) 2024 The LaTeX Project"
 local release_date = "2024-03-03"
 local script_desc = "System queries for LaTeX using Lua\n"
 local script_name = "l3sys-query"
@@ -358,7 +358,7 @@ local function help()
   end
 
   -- 'Header' of fixed info
-  print("\nUsage: " .. script_name .. " <cmd> [<options>] [<spec>]\n")
+  print("Usage: " .. script_name .. " <cmd> [<options>] [<spec>]\n")
   print("Valid commands are:")
 
   -- Sort the commands, pad the descriptions, print
@@ -392,7 +392,7 @@ local function help()
 end
 
 local function version()
-  print("\n" .. script_name .. ": " .. script_desc .. "\nRelease " 
+  print(script_name .. ": " .. script_desc .. "\nRelease " 
     .. release_date .. "\n" .. copyright)
 end
 
