@@ -251,9 +251,18 @@ local function parse_args()
   local function tidy(num)
     local t = {}
     for i = num,#arg do
-      insert(t,arg[i])
+      local arg_i = arg[i]
+      -- If an entire arg is surround by '...', clean up
+      if match(arg_i,"^'") and match(arg_i,"'$") then
+        arg_i = sub(arg_i,2,-2)
+      end
+      insert(t,arg_i)
     end
-    return concat(t," ")
+    local list = concat(t," ")
+    if match(list,"^'") and match(list,"'$") then
+      list = sub(list,2,-2)
+    end
+    return list
   end
 
   -- Examine all other arguments
@@ -417,15 +426,6 @@ function cmd_impl.ls(arg_list)
   if not arg_list or arg_list == "" then
     arg_list = "*"
   end
-  -- On Windows, "texlua" will expand globs itself: this can be suppressed by
-  -- surrounding with "'". Formally, this only needs one "'" at one end, but
-  -- that seems extremely unlikely, so rather strip exactly one pair of
-  -- surrounding "'". That means that "l3sys-query" can always be called with
-  -- a glob argument surrounded by "'...'" and will work independent of
-  -- platform.
-  if match(arg_list,"^'") and match(arg_list,"'$") then
-    arg_list = sub(arg_list,2,-2)
-  end
   -- Look for absolute paths or any trying to leave the confines of the current
   -- directory: this is not supported.
   if match(arg_list,"%.%.") or 
@@ -449,7 +449,11 @@ function cmd_impl.ls(arg_list)
   local pattern = glob_to_pattern(glob)
   local exclude_pattern
   if options.exclude then
-    exclude_pattern = glob_to_pattern(options.exclude)
+    local exclude = options.exclude
+    if match(exclude,"^'") and match(exclude,"'$") then
+      exclude = sub(exclude,2,-2)
+    end
+    exclude_pattern = glob_to_pattern(exclude)
   end
   -- A lookup table for attributes: map between lfs- and Unix-type naming
   local attrib_map = {d = "directory", f = "file"}
