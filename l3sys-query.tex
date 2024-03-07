@@ -104,6 +104,8 @@ As well as these targets, the script recognizes the options
   \item |--all| Include \enquote{dot} entries in directory listings
   \item |--exclude| Specification for directory entries to exclude
   \item |--ignore-case| Ignores case when sorting directory listings
+  \item |--pattern| (|-p|) Treat the \meta{args} as Lua patterns rather
+    than converting from wildcards
   \item |--recursive| (|-r|) Enables recursive searching during directory
     listings
   \item |--reverse-sort| Causes sorting to go from highest to lowest rather
@@ -145,6 +147,14 @@ Directory entries starting |.| are traditionally hidden on Linux and macOS
 systems: these \enquote{dot} entries are excluded unless the |--all| option is
 set. Note that this will skip hidden directories entirely when used with the
 |--recursive| option.
+
+For more complex matching, the \meta{args} can be treated as a Lua pattern using
+the |--pattern| (|-p|) option; this also applies to the \meta{xarg} argument to
+the |--exclude| option. For example, the equivalent to wildcard |*.png| could be
+obtained using
+\begin{verbatim}
+  l3sys-query ls --pattern '^.*%.png$'
+\end{verbatim}
 
 Since \texttt{l3sys-query} is intended primarily for use with restricted shell
 escape calls from \TeX{} processes, handling of spaces is unusual. It is not

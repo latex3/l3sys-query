@@ -72,6 +72,13 @@ local option_list =
         short = "h",
         type  = "boolean"
       },
+    pattern =
+      {
+        cmds  = {"ls"},
+        desc  = "Treat (x)args as a Lua pattern",
+        short = "p",
+        type  = "boolean"
+      },
     recursive =
       {
         cmds  = {"ls"},
@@ -163,7 +170,10 @@ end
    (c) 2008-2011 David Manura.  Licensed under the same terms as Lua (MIT).
 
 --]]
-local function glob_to_pattern(glob)
+local function glob_to_pattern(glob,skip_convert)
+  if skip_convert then
+    return glob
+  end
 
   local pattern = "^" -- pattern being built
   local i = 0 -- index in glob
@@ -446,14 +456,15 @@ function cmd_impl.ls(arg_list)
   if not match(path,"^%.") then
     path = "./" .. path
   end
-  local pattern = glob_to_pattern(glob)
+  local conv_pattern = options.pattern
+  local pattern = glob_to_pattern(glob,conv_pattern)
   local exclude_pattern
   if options.exclude then
     local exclude = options.exclude
     if match(exclude,"^'") and match(exclude,"'$") then
       exclude = sub(exclude,2,-2)
     end
-    exclude_pattern = glob_to_pattern(exclude)
+    exclude_pattern = glob_to_pattern(exclude,conv_pattern)
   end
   -- A lookup table for attributes: map between lfs- and Unix-type naming
   local attrib_map = {d = "directory", f = "file"}
