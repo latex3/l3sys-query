@@ -545,7 +545,7 @@ elseif not cmd_impl[cmd] then
     help()
   else
     stderr:write(script_name .. ": '" .. cmd .. "' is not a " .. script_name ..
-      " command. See '" .. script_name .. " --help'.")
+      " command. See '" .. script_name .. " --help'.\n")
   end
   exit(1)
 end
