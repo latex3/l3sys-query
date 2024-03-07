@@ -34,7 +34,7 @@ function  docinit_hook()
   local help_text = assert(f:read("*a"))
   f:close()
 
-  insert(man_t,(help_text:gsub("\nUsage.*spec>]\n\n","")
+  insert(man_t,(help_text:gsub("\nUsage.*args>]\n\n","")
   :gsub("Valid commands",".SH COMMANDS\nValid commands")
   :gsub("Valid options",".SH OPTIONS\nValid options")
   :gsub("Full manual",'.SH "SEE ALSO"\nFull manual')
