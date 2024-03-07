@@ -359,7 +359,7 @@ local function help()
 
   -- 'Header' of fixed info
   print("Usage: " .. script_name .. " <cmd> [<options>] [<spec>]\n")
-  print("Valid commands are:")
+  print("Valid  <cmd>s are:")
 
   -- Sort the commands, pad the descriptions, print
   local t,longest = format_list(cmd_desc)
@@ -370,7 +370,7 @@ local function help()
   end
 
   -- Same for the options
-  print("\nValid options are:")
+  print("\nValid <options> are:")
   t,longest = format_list(option_list)
   for _,name in ipairs(t) do
     local opt = option_list[name]
