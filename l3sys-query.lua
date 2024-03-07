@@ -212,7 +212,7 @@ end
 -- Initial data for the command line parser
 local cmd = ""
 local options = {}
-local spec = ""
+local arg_list = ""
 
 local function parse_args()
   -- Turn long/short options into two lookup tables
@@ -264,7 +264,7 @@ local function parse_args()
     local a = arg[i]
     -- Terminate search for options
     if a == "--" then
-      spec = tidy(i + 1)
+      arg_list = tidy(i + 1)
       return
     end
 
@@ -337,7 +337,7 @@ local function parse_args()
 
     -- Collect up the remaining arguments
     if not opt then
-      spec = tidy(i)
+      arg_list = tidy(i)
       break
     end
   end
@@ -413,9 +413,9 @@ end
 -- The aim here is to convert a user file specification (if given) into a 
 -- Lua pattern, and then to do a listing.
 cmd_desc.ls = "Prints a listing based on the <args> and <options>"
-function cmd_impl.ls(spec)
-  if not spec or spec == "" then
-    spec = "*"
+function cmd_impl.ls(arg_list)
+  if not arg_list or arg_list == "" then
+    arg_list = "*"
   end
   -- On Windows, "texlua" will expand globs itself: this can be suppressed by
   -- surrounding with "'". Formally, this only needs one "'" at one end, but
@@ -423,22 +423,22 @@ function cmd_impl.ls(spec)
   -- surrounding "'". That means that "l3sys-query" can always be called with
   -- a glob argument surrounded by "'...'" and will work independent of
   -- platform.
-  if match(spec,"^'") and match(spec,"'$") then
-    spec = sub(spec,2,-2)
+  if match(arg_list,"^'") and match(arg_list,"'$") then
+    arg_list = sub(arg_list,2,-2)
   end
   -- Look for absolute paths or any trying to leave the confines of the current
   -- directory: this is not supported.
-  if match(spec,"%.%.") or 
-     match(spec,"^/") or 
-     match(spec,"^\\") or 
-     match(spec,"[a-zA-Z]:") then
+  if match(arg_list,"%.%.") or 
+     match(arg_list,"^/") or 
+     match(arg_list,"^\\") or 
+     match(arg_list,"[a-zA-Z]:") then
     return
   end
   -- Tidy up and convert to a pattern.
-  path,glob = match(spec,"^(.*)/([^/]*)$")
+  path,glob = match(arg_list,"^(.*)/([^/]*)$")
   if not path then
     path = "."
-    glob = spec
+    glob = arg_list
   end
   if path == "" then
     path = "."
@@ -573,7 +573,7 @@ for k,_ in pairs(options) do
   end
 end
 
-local result = cmd_impl[cmd](spec)
+local result = cmd_impl[cmd](arg_list)
 
 if result then
   print(result)
