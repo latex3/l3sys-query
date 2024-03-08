@@ -1,0 +1,22 @@
+\documentclass{article}
+\usepackage{l3sys-query}
+
+\errorcontextlines888
+\QueryPWD \thisdir
+
+\typeout{PWD: \thisdir}
+
+\QueryFiles{*.tex}{\typeout{A: #1}}
+
+\QueryFiles[recursive,type=d]{}{\typeout{B: #1}}% . ought to work
+\QueryFiles[recursive,]{.}{\typeout{BB: #1}}% . ought to work
+
+\QueryFiles[sort=date]{*.tex}{\typeout{C: #1}}
+
+\QueryFiles[pattern]{^[0-9].*.tex}{\typeout{D: #1}}
+
+
+\QueryFiles[pattern]{^%d.*.tex}{\typeout{E: #1}}
+
+\stop
+

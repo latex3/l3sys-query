@@ -1,0 +1,72 @@
+
+\ProvidesPackage{l3sys-query}[2024-03-08 v0.01 LaTeX2e interface for l3sys file queries]
+
+% Copyright 2024  The LaTeX Project
+% License: LPPL 1.3c
+
+% Defines:
+
+% \QueryPWD {<result>}
+% defines the command passed in as #1 to be the current working directory
+
+% \QueryFiles[<options>]{<args>}{function}
+% produces a file list based on args and the options then applies function to each one.
+% function should be a macro body which will be passed the file path as  #1
+% on each iteration.
+% For options and details see l3sys.dtx
+
+\ExplSyntaxOn
+
+\NewDocumentCommand\QueryPWD {m} {
+  \sys_get_query:nnnN {pwd} {} {} #1
+}
+
+
+\NewDocumentCommand\QueryFiles {} {
+  \group_begin:
+    \char_set_catcode_other:N \~
+    \char_set_catcode_other:N \%
+    \QueryFiles_inner
+ }
+\NewDocumentCommand\QueryFiles_inner {O{}mm}{
+  \group_end:
+  \tl_set:Nn\l_tmpa_tl{}
+  \keys_set:nn{QueryFiles}{#1}
+  \exp_args:NnV\sys_split_query:nnnN {ls} \l_tmpa_tl {#2} \l_tmpa_seq
+  \seq_map_inline:Nn\l_tmpa_seq{#3}
+}
+
+\keys_define:nn {QueryFiles} {
+recursive .code:n  =\tl_put_right:Nn \l_tmpa_tl {--recursive ~ } ,
+recursive .value_forbidden:n = true ,
+
+all .code:n  =\tl_put_right:Nn \l_tmpa_tl {--all ~ } ,
+all .value_forbidden:n = true ,
+
+ignore-case .code:n  =\tl_put_right:Nn \l_tmpa_tl {--ignore-case ~ } ,
+ignore-case .value_forbidden:n = true ,
+
+reverse-sort .code:n  =\tl_put_right:Nn \l_tmpa_tl {--reverse-sort ~ } ,
+reverse-sort .value_forbidden:n = true ,
+
+exclude .code:n  =\tl_put_right:Ne \l_tmpa_tl {
+  --exclude ~
+  \sys_if_shell_restricted:TF: :'
+  \exp_not:n{#1}
+  \sys_if_shell_restricted:TF: :'
+  ~ } ,
+exclude .value_required:n = true ,
+
+type .choices:nn = {d,f}
+                   {\tl_put_right:Nn \l_tmpa_tl {--type ~ #1 ~ }} ,
+sort .choices:nn = {date,name}
+{\tl_put_right:Nn \l_tmpa_tl {--sort ~ #1 ~ }} ,
+
+
+pattern .code:n  =\tl_put_right:Nn \l_tmpa_tl {--pattern ~ } ,
+pattern .value_forbidden:n = true ,
+
+}
+
+
+\ExplSyntaxOff
