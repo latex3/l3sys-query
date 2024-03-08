@@ -275,7 +275,7 @@ local function parse_args()
       dequote(arg_i)
       insert(t,arg_i)
     end
-    return dequote(concat(t," "))
+    return concat(t," ")
   end
 
   -- Examine all other arguments
