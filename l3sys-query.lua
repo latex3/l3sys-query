@@ -158,6 +158,16 @@ end
 -- Support functions and data
 --
 
+-- Remove '...' or :...: around an entire text:
+-- we need this to support restricted shell escape on Windows
+local function dequote(text)
+  if (match(text,"^'") and match(text,"'$")) or
+     (match(text,"^:") and match(text,":$")) then
+    return sub(text,2,-2)
+  end
+  return text
+end
+
 -- Convert a file glob into a pattern for use by e.g. string.gub
 -- Based on https://github.com/davidm/lua-glob-pattern
 -- Simplified substantially: "[...]" syntax not supported as is not
@@ -262,17 +272,10 @@ local function parse_args()
     local t = {}
     for i = num,#arg do
       local arg_i = arg[i]
-      -- If an entire arg is surround by '...', clean up
-      if match(arg_i,"^'") and match(arg_i,"'$") then
-        arg_i = sub(arg_i,2,-2)
-      end
+      dequote(arg_i)
       insert(t,arg_i)
     end
-    local list = concat(t," ")
-    if match(list,"^'") and match(list,"'$") then
-      list = sub(list,2,-2)
-    end
-    return list
+    return dequote(concat(t," "))
   end
 
   -- Examine all other arguments
@@ -460,10 +463,7 @@ function cmd_impl.ls(arg_list)
   local pattern = glob_to_pattern(glob,conv_pattern)
   local exclude_pattern
   if options.exclude then
-    local exclude = options.exclude
-    if match(exclude,"^'") and match(exclude,"'$") then
-      exclude = sub(exclude,2,-2)
-    end
+    local exclude = dequote(options.exclude)
     exclude_pattern = glob_to_pattern(exclude,conv_pattern)
   end
   -- A lookup table for attributes: map between lfs- and Unix-type naming
