@@ -271,9 +271,7 @@ local function parse_args()
   local function tidy(num)
     local t = {}
     for i = num,#arg do
-      local arg_i = arg[i]
-      dequote(arg_i)
-      insert(t,arg_i)
+      insert(t,dequote(arg[i]))
     end
     return concat(t," ")
   end
