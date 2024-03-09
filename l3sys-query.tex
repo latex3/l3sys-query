@@ -206,8 +206,6 @@ The handling of wildcards needs some further comment for those using
 \texttt{l3sys-query} from the command line: the \pkg{expl3} interface described
 in Section~\ref{sec:expl3} handles this aspect automatically for the user.
 
-\subsection{Shell use}
-
 On macOS and Linux, the shell normally expands globs, which include the
 wildcards |*| and |?|, before passing arguments to the appropriate command. This
 can be suppressed by surrounding the argument with |'| characters, hence the
@@ -218,38 +216,19 @@ formulation
 earlier.
 
 On Windows, the shell does no expansion, and thus arguments are passed as-is to
-the relevant command. However, in the \TeX{}~Live implementation of
-\texttt{texlua}, the script interpreter expands |*| and |?| \emph{before} they
-are made available to the script itself. This can only be suppressed by
-including one or more characters that prevent a match: this causes the
-\emph{entire} argument to be passed to the script, including whatever
-\enquote{extra} characters are used. Importantly, |'| has no special meaning
-here.
-
-To allow quoting of wildcards from the shell in a platform-neutral manner,
-\texttt{l3sys-query} will strip exactly one set of |'| characters around
-each argument before further processing.
-
-\subsection{Calls \emph{via} restricted shell escape}
+the relevant command. As such, |'| has no special meaning here. However, to
+allow quoting of wildcards from the shell in a platform-neutral manner,
+\texttt{l3sys-query} will strip exactly one set of |'| characters around each
+argument before further processing.
 
 Restricted shell escape prevents shell expansion of wildcards entirely, but
-also strips out all |'| characters from arguments. Thus on macOS and
-Linux, a \TeX{} call such as
+also strips out all |'| characters from arguments. Thus a \TeX{} call such as
 \begin{verbatim}
   \input|"l3sys-query ls '*.png'"
 \end{verbatim}
 will work as it is converted to one without the |'| characters (the surrounding
 |"| are needed to allow space-separated arguments to be passed as a whole to
 |\input|).
-
-On Windows, the rules of restricted shell escape mean that |'| cannot be
-used here to prevent expansion of |*| and |?|. Rather, the character |:|
-should be used: this is reserved on Windows in any case. Thus one would use
-\begin{verbatim}
-  \input|"l3sys-query ls :*.png:"
-\end{verbatim}
-on Windows; \texttt{l3sys-query} and strips out exactly one set of surrounding
-|:| characters.
 
 \section{The \LaTeX{} interface\label{sec:expl3}}
 

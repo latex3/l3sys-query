@@ -161,8 +161,7 @@ end
 -- Remove '...' or :...: around an entire text:
 -- we need this to support restricted shell escape on Windows
 local function dequote(text)
-  if (match(text,"^'") and match(text,"'$")) or
-     (match(text,"^:") and match(text,":$")) then
+  if (match(text,"^'") and match(text,"'$")) then
     return sub(text,2,-2)
   end
   return text
