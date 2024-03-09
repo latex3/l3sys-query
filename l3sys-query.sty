@@ -51,9 +51,9 @@ reverse-sort .value_forbidden:n = true ,
 
 exclude .code:n  =\tl_put_right:Ne \l_tmpa_tl {
   --exclude ~
-  \sys_if_shell_restricted:TF: :'
+  \sys_if_shell_restricted:F'
   \exp_not:n{#1}
-  \sys_if_shell_restricted:TF: :'
+  \sys_if_shell_restricted:F'
   ~ } ,
 exclude .value_required:n = true ,
 
