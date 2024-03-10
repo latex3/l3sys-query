@@ -86,7 +86,7 @@ local option_list =
         short = "r",
         type  = "boolean"
       },
-    ["reverse-sort"] =
+    reverse =
       {
         cmds = {"ls"},
         desc = "Reversing sorting order",
@@ -507,7 +507,7 @@ function cmd_impl.ls(arg_list)
     end
   end
 
-  if options["reverse-sort"] then
+  if options.reverse then
     sort(s,function(a,b) return case(a) > case(b) end)
   else
     sort(s,function(a,b) return case(a) < case(b) end)
