@@ -10,10 +10,13 @@
 % defines the command passed in as #1 to be the current working directory
 
 % \QueryFiles[<options>]{<args>}{function}
+% \QueryFilesTF[<options>]{<args>}{function}{<Pre list code>}{<empty list code>}
 % produces a file list based on args and the options then applies function to each one.
 % function should be a macro body which will be passed the file path as  #1
 % on each iteration.
 % For options and details see l3sys.dtx
+% The TF version executes the T (<Pre list code>) argument before iterating over the list
+% and the F (<empty list code>) argument if the list is empty
 
 \ExplSyntaxOn
 
@@ -21,20 +24,42 @@
   \sys_get_query:nnnN {pwd} {} {} #1
 }
 
-
 \NewDocumentCommand\QueryFiles {} {
   \group_begin:
     \char_set_catcode_other:N \~
     \char_set_catcode_other:N \%
     \QueryFiles_inner
  }
-\NewDocumentCommand\QueryFiles_inner {O{}mm}{
+\NewDocumentCommand\QueryFiles_inner {O{}m}{
   \group_end:
   \tl_set:Nn\l_tmpa_tl{}
   \keys_set:nn{QueryFiles}{#1}
   \exp_args:NnV\sys_split_query:nnnN {ls} \l_tmpa_tl {#2} \l_tmpa_seq
-  \seq_map_inline:Nn\l_tmpa_seq{#3}
+  \seq_map_inline:Nn\l_tmpa_seq
 }
+
+% duplicates rather than shares code so as to read the function and TF arguments
+% with normal catcode regime. (This could probably be optimised)
+
+\NewDocumentCommand\QueryFilesTF {} {
+  \group_begin:
+    \char_set_catcode_other:N \~
+    \char_set_catcode_other:N \%
+    \QueryFilesTF_inner
+ }
+\NewDocumentCommand\QueryFilesTF_inner {O{}m}{
+  \group_end:
+  \tl_set:Nn\l_tmpa_tl{}
+  \keys_set:nn{QueryFiles}{#1}
+  \exp_args:NnV\sys_split_query:nnnN {ls} \l_tmpa_tl {#2} \l_tmpa_seq
+  \seq_if_empty:NTF \l_tmpa_seq \use_iii:nnn \__queryfiles_aux:nnn
+}
+
+
+\cs_new:Npn  \__queryfiles_aux:nnn #1#2#3 {
+    #2
+    \seq_map_inline:Nn\l_tmpa_seq {#1}
+ }
 
 \keys_define:nn {QueryFiles} {
 recursive .code:n  =\tl_put_right:Nn \l_tmpa_tl {--recursive ~ } ,

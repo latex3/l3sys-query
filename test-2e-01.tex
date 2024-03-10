@@ -1,7 +1,8 @@
 \documentclass{article}
 \usepackage{l3sys-query}
 
-\errorcontextlines888
+
+
 \QueryPWD \thisdir
 
 \typeout{PWD: \thisdir}
@@ -17,6 +18,11 @@
 
 
 \QueryFiles[pattern]{^%d.*.tex}{\typeout{E: #1}}
+
+\QueryFilesTF{t*.*}{\typeout{TFA: #1}}{\typeout{TFA files:}}{\typeout{TFA empty file list}}
+
+\QueryFilesTF{wibble*.*}{\typeout{TFB: #1}}{\typeout{TFB files:}}{\typeout{TFB empty file list}}
+
 
 \stop
 
