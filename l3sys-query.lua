@@ -433,7 +433,7 @@ end
 -- Lua pattern, and then to do a listing.
 cmd_desc.ls = "Prints a listing based on the <args> and <options>"
 function cmd_impl.ls(arg_list)
-  if not arg_list or arg_list == "" then
+  if not arg_list or arg_list == "" or arg_list = "." then
     arg_list = "*"
   end
   -- Look for absolute paths or any trying to leave the confines of the current
