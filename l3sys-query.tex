@@ -157,22 +157,6 @@ obtained using
   l3sys-query ls --pattern '^.*%.png$'
 \end{verbatim}
 
-Since \texttt{l3sys-query} is intended primarily for use with restricted shell
-escape calls from \TeX{} processes, handling of spaces is unusual. It is not
-possible to quote spaces in such a call, so for example whilst
-\begin{verbatim}
-  l3sys-query ls "'foo *'"
-\end{verbatim}
-does work from the command prompt to find all files with names starting
-\verb*|foo |, it would not work \emph{via} restricted shell escape. To
-circumvent this, \texttt{l3sys-query} will collect all command line arguments
-after any \meta{options}, and combine these as a space-separated \meta{args},
-for example allowing
-\begin{verbatim}
-  l3sys-query ls 'foo *'
-\end{verbatim}
-to work.
-
 The results returned by |ls| can be sorted using the |--sort| option. This can
 be set to |none| (use the order from the file system: the default), |name| (sort
 by file name) or |date| (sort by date last modified). The sorting order can be
@@ -199,6 +183,27 @@ main file, assuming a command such as
   pdflatex main.tex
 \end{verbatim}
 The \texttt{pwd} command is unaffected by any options.
+
+\section{Spaces in arguments}
+
+Since \texttt{l3sys-query} is intended primarily for use with restricted shell
+escape calls from \TeX{} processes, handling of spaces is unusual. It is not
+possible to quote spaces in such a call, so for example whilst
+\begin{verbatim}
+  l3sys-query ls "foo *"
+\end{verbatim}
+does work from the command prompt to find all files with names starting
+\verb*|foo |, it would not work \emph{via} restricted shell escape. To
+circumvent this, \texttt{l3sys-query} will collect all command line arguments
+after any \meta{options}, and combine these as a space-separated \meta{args},
+for example allowing
+\begin{verbatim}
+  l3sys-query ls foo '*'
+\end{verbatim}
+to achieve the same result as the first example. The result is that the
+\meta{args} will only every be interpreted by \texttt{l3sys-query} as a single
+argument. It also means that spaces cannot be used at the start or end of the
+argument, nor can multiple spaces appear between non-space arguments.
 
 \section{Wildcard expansion handling\label{sec:wildcard}}
 
