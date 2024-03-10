@@ -101,7 +101,6 @@ use~|/|, irrespective of the platform in use.
 
 As well as these targets, the script recognizes the options
 \begin{itemize}
-  \item |--all| Include \enquote{dot} entries in directory listings
   \item |--exclude| Specification for directory entries to exclude
   \item |--ignore-case| Ignores case when sorting directory listings
   \item |--pattern| (|-p|) Treat the \meta{args} as Lua patterns rather
@@ -148,9 +147,10 @@ option, which should be given with a \meta{xarg}, for example
   l3sys-query ls --exclude '*.bak' 'graphics/*'
 \end{verbatim}
 Directory entries starting |.| are traditionally hidden on Linux and macOS
-systems: these \enquote{dot} entries are excluded unless the |--all| option is
-set. Note that this will skip hidden directories entirely when used with the
-|--recursive| option.
+systems: these \enquote{dot} entries are excluded from the output of
+\texttt{l3sys-query}. The entries |.| and |..| for the current and parent
+directory are also excluded from the results returned by \texttt{l3sys-query} as
+they can always be assumed.
 
 For more complex matching, the \meta{args} can be treated as a Lua pattern using
 the |--pattern| (|-p|) option; this also applies to the \meta{xarg} argument to
@@ -171,7 +171,8 @@ option. This takes a string argument, one of |d| (directory) or |f| (file).
 
 As standard, only the path specified as part of the \meta{args} is queried.
 However, if the |--recursive| (|-r|) option is set, the query is applied within
-all subdirectories.
+all subdirectories. Subdirectories starting with~|.| (macOS and Linux hidden)
+are excluded from recursion.
 
 For security reasons, only paths within the current working directory can be
 queried, this for example |graphics/*.png| will list all |png| files in the
