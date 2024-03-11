@@ -137,13 +137,20 @@ local sort   = table.sort
 -- Support functions and data
 --
 
--- Remove '...' or :...: around an entire text:
+-- Remove '...' around an entire text:
 -- we need this to support restricted shell escape on Windows
 local function dequote(text)
   if (match(text,"^'") and match(text,"'$")) then
     return sub(text,2,-2)
   end
   return text
+end
+
+
+-- A short auxiliary used whever the script bails out
+local function info_and_quit(s)
+  stderr:write("\n" .. s .. "\nTry '" .. script_name .. " --help' for more information.\n")
+  exit(1)
 end
 
 -- Convert a file glob into a pattern for use by e.g. string.gub
@@ -185,7 +192,7 @@ local function glob_to_pattern(glob,skip_convert)
       pattern = pattern .. ".*"
     elseif char == "[" then -- ]
       -- Ignored
-      print("[...] syntax not supported in globs!")
+      info_and_quit("[...] syntax not supported in globs!")
     elseif char == "\\" then
       i = i + 1
       char = sub(glob,i,i)
@@ -201,11 +208,6 @@ local function glob_to_pattern(glob,skip_convert)
   return pattern
 end
 
--- A short auxiliary used whever the script bails out
-local function more_info()
-  stderr:write("Try '" .. script_name .. " --help' for more information.\n")
-  exit(1)
-end
 
 -- Initial data for the command line parser
 local cmd = ""
@@ -298,22 +300,19 @@ local function parse_args()
         if option_list[optname].type == "boolean" then
           if optarg then
             local opt = "-" .. (match(a,"^%-%-") and "-" or "") .. opt
-            stderr:write("Value not allowed for option " .. opt .. "\n")
-            more_info()
+            info_and_quit("Value not allowed for option " .. opt)
           end
         else
           if not optarg then
             optarg = arg[i + 1]
             if not optarg then
-              stderr:write("Missing value for option " .. a .. "\n")
-              more_info()
+              info_and_quit("Missing value for option " .. a)
             end
             i = i + 1
           end
         end
       else
-        stderr:write("Unknown option " .. a .. "\n")
-        more_info()
+        info_and_quit("Unknown option " .. a)
       end
 
       -- Store the result
@@ -533,9 +532,8 @@ elseif not cmd_impl[cmd] then
   if cmd == "" then
     help()
   else
-    stderr:write(script_name .. ": '" .. cmd .. "' is not a " .. script_name ..
-      " command.\n")
-    more_info()
+    info_and_quit(script_name .. ": '" .. cmd .. "' is not a " .. script_name ..
+      " command.")
   end
   exit(1)
 end
@@ -555,9 +553,8 @@ for k,_ in pairs(options) do
       t[v] = true
     end
     if not t[cmd] then
-      stderr:write(script_name .. ": Option '" .. k .. 
-        "' does not apply to '"  .. cmd .. "'\n")
-      more_info()
+      info_and_quit(script_name .. ": Option '" .. k .. 
+        "' does not apply to '"  .. cmd .. "'")
     end
   end
 end
