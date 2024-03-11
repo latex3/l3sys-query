@@ -48,12 +48,6 @@ local cmd_desc = {}
 
 local option_list =
   {
-    all =
-      {
-        cmds = {"ls"},
-        desc = "Include 'dot' entries in directory listing",
-        type = "boolean"
-      },
     exclude =
       {
         cmds = {"ls"},
