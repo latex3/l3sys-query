@@ -230,8 +230,12 @@ allow quoting of wildcards from the shell in a platform-neutral manner,
 \texttt{l3sys-query} will strip exactly one set of |'| characters around each
 argument before further processing.
 
+It is not possible to use |"| quotes at all in the argument passed to
+|l3sys-query| from \TeX, as the \TeX\ system removes all |"| in |\input|
+while handling space quoting.
+
 Restricted shell escape prevents shell expansion of wildcards entirely. On
-non-Windows systems, it does this by replacing all \verb|"| by |'| and ensuring
+non-Windows systems, it does this by ensuring
 that each argument is |'| quoted to ensure further expansion.
 Thus a \TeX{} call such as
 \begin{verbatim}
