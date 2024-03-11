@@ -6,7 +6,7 @@
 
 % Defines:
 
-% \QueryPWD {<result>}
+% \QueryWorkingDirectory {<result>}
 % defines the command passed in as #1 to be the current working directory
 
 % \QueryFiles[<options>]{<args>}{function}
@@ -20,8 +20,8 @@
 
 \ExplSyntaxOn
 
-\NewDocumentCommand\QueryPWD {m} {
-  \sys_get_query:nnnN {pwd} {} {} #1
+\NewDocumentCommand\QueryWorkingDirectory {m} {
+  \sys_get_query:nN {pwd} #1
 }
 
 \NewDocumentCommand\QueryFiles {} {
