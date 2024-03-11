@@ -230,21 +230,28 @@ allow quoting of wildcards from the shell in a platform-neutral manner,
 \texttt{l3sys-query} will strip exactly one set of |'| characters around each
 argument before further processing.
 
-Restricted shell escape prevents shell expansion of wildcards entirely, but
-also strips out all |'| characters from arguments. Thus a \TeX{} call such as
+Restricted shell escape prevents shell expansion of wildcards entirely. On
+non-Windows systems, it does this by replacing all \verb|"| by |'| and ensuring
+that each argument is |'| quoted to ensure further expansion.
+Thus a \TeX{} call such as
 \begin{verbatim}
   \input|"l3sys-query ls '*.png'"
 \end{verbatim}
-will work as it is converted to one without the |'| characters (the surrounding
-|"| are needed to allow space-separated arguments to be passed as a whole to
-|\input|).
+will work if |--shell-escape| is used as the argument is passed directly to the shell, but
+in restricted shell escape will give an error such as:
+\begin{verbatim}
+! I can't find file `"|l3sys-query ls '*.png'"'.
+\end{verbatim}
+The \LaTeX\ interfaces described below adust the quoting used depending on the |shell-escape| status.
 
 \section{The \LaTeX{} interface\label{sec:expl3}}
 
 Using \texttt{l3sys-query} is not tied to access \emph{via} \pkg{expl3}, but
 this is the preferred approach for the \LaTeX{} Team. Details of how to use
 \texttt{l3sys-query} as an \pkg{expl3} programmer will covered in
-\texttt{interface3.pdf} once the macro code is finalised.
+\texttt{interface3.pdf} once the macro code is finalised. A document level interface
+will also be provided via a \pkg{l3sys-query} package which is based on the \pkg{expl3}
+interface and will be described here.
 
 \end{documentation}
 
