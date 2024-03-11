@@ -231,8 +231,8 @@ allow quoting of wildcards from the shell in a platform-neutral manner,
 argument before further processing.
 
 It is not possible to use |"| quotes at all in the argument passed to
-|l3sys-query| from \TeX, as the \TeX\ system removes all |"| in |\input| while
-handling space quoting.
+\texttt{l3sys-query} from \TeX{}, as the \TeX{} system removes all |"| in
+|\input| while handling space quoting.
 
 Restricted shell escape prevents shell expansion of wildcards entirely. On
 non-Windows systems, it does this by ensuring that each argument is |'| quoted
@@ -245,7 +245,7 @@ shell, but in restricted shell escape will give an error such as:
 \begin{verbatim}
 ! I can't find file `"|l3sys-query ls '*.png'"'.
 \end{verbatim}
-The \LaTeX\ interfaces described below adust the quoting used depending on the
+The \LaTeX{} interfaces described below adust the quoting used depending on the
 |shell-escape| status.
 
 \section{The \LaTeX{} interface\label{sec:expl3}}
