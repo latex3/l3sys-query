@@ -11,14 +11,17 @@
 \QueryFiles{*.tex}{\typeout{A: #1}}
 
 \QueryFiles[recursive,type=d]{}{\typeout{B: #1}}% . ought to work
-\QueryFiles[recursive,]{.}{\typeout{BB: #1}}% . ought to work
 
-\QueryFiles[sort=date]{*.tex}{\typeout{C: #1}}
+\QueryFiles[type=f]{}{\typeout{C_: #1}}% default
+\QueryFiles[type=f]{*}{\typeout{C*: #1}}% * same as {}
+\QueryFiles[type=f]{.}{\typeout{C.: #1}}% . same as {}
 
-\QueryFiles[pattern]{^[0-9].*.tex}{\typeout{D: #1}}
+\QueryFiles[sort=date]{*.tex}{\typeout{D: #1}}
+
+\QueryFiles[pattern]{^[0-9].*.tex}{\typeout{E: #1}}
 
 
-\QueryFiles[pattern]{^%d.*.tex}{\typeout{E: #1}}
+\QueryFiles[pattern]{^%d.*.tex}{\typeout{F: #1}}
 
 \QueryFilesTF{t*.*}{\typeout{TFA: #1}}{\typeout{TFA files:}}{\typeout{TFA empty file list}}
 
