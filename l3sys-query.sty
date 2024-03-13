@@ -24,17 +24,30 @@
   \sys_get_query:nN {pwd} #1
 }
 
+% for saving the current definition of \% and ~
+\tl_new:N\l_query_percent_tl
+\tl_new:N\l_query_tilde_tl
+
+% allow % and ^^ at the top level
 \NewDocumentCommand\QueryFiles {} {
   \group_begin:
-    \char_set_catcode_other:N \~
     \char_set_catcode_other:N \%
+    \char_set_catcode_other:N \^
     \QueryFiles_inner
- }
+  }
+
+\char_set_catcode_active:N \~
 \NewDocumentCommand\QueryFiles_inner {O{}m}{
   \group_end:
   \tl_set:Nn\l_tmpa_tl{}
+  \cs_set_eq:NN  \l_query_percent_tl \%
+  \cs_set_eq:NN  \% \c_percent_str
+  \cs_set_eq:NN  \l_query_tilde_tl ~
+  \cs_set_eq:NN  ~ \c_tilde_str
   \keys_set:nn{QueryFiles}{#1}
   \exp_args:NnV\sys_split_query:nnnN {ls} \l_tmpa_tl {#2} \l_tmpa_seq
+  \cs_set_eq:NN  \% \l_query_percent_tl
+  \cs_set_eq:NN  ~ \l_query_tilde_tl
   \seq_map_inline:Nn\l_tmpa_seq
 }
 
@@ -43,17 +56,23 @@
 
 \NewDocumentCommand\QueryFilesTF {} {
   \group_begin:
-    \char_set_catcode_other:N \~
     \char_set_catcode_other:N \%
     \QueryFilesTF_inner
  }
 \NewDocumentCommand\QueryFilesTF_inner {O{}m}{
   \group_end:
   \tl_set:Nn\l_tmpa_tl{}
+  \cs_set_eq:NN  \l_query_percent_tl \%
+  \cs_set_eq:NN  \% \c_percent_str
+  \cs_set_eq:NN  \l_query_tilde_tl ~
+  \cs_set_eq:NN  ~ \c_tilde_str
   \keys_set:nn{QueryFiles}{#1}
   \exp_args:NnV\sys_split_query:nnnN {ls} \l_tmpa_tl {#2} \l_tmpa_seq
+  \cs_set_eq:NN  \% \l_query_percent_tl
+  \cs_set_eq:NN  ~ \l_query_tilde_tl
   \seq_if_empty:NTF \l_tmpa_seq \use_iii:nnn \__queryfiles_aux:nnn
 }
+\char_set_catcode_space:N \~
 
 
 \cs_new:Npn  \__queryfiles_aux:nnn #1#2#3 {

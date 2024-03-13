@@ -8,25 +8,33 @@
 \typeout{PWD: \thisdir}
 
 
-\QueryFiles{*.tex}{\typeout{A: #1}}
+\QueryFiles{*.tex}{\typeout{star: #1}}
 
-\QueryFiles[recursive,type=d]{}{\typeout{B: #1}}% . ought to work
+\QueryFiles[recursive,type=d]{}{\typeout{recursive d: #1}}
 
-\QueryFiles[type=f]{}{\typeout{C_: #1}}% default
-\QueryFiles[type=f]{*}{\typeout{C*: #1}}% * same as {}
-\QueryFiles[type=f]{.}{\typeout{C.: #1}}% . same as {}
+\QueryFiles[type=f]{}{\typeout{f _: #1}}% default
+\QueryFiles[type=f]{*}{\typeout{f *: #1}}% * same as {}
+\QueryFiles[type=f]{.}{\typeout{f .: #1}}% . same as {}
 
-\QueryFiles[sort=date]{*.tex}{\typeout{D: #1}}
+\QueryFiles[sort=date]{*.tex}{\typeout{date: #1}}
 
-\QueryFiles[pattern]{^[0-9].*.tex}{\typeout{E: #1}}
+\QueryFiles[pattern]{^[0-9].*.tex}{\typeout{pattern: #1}}
 
 
-\QueryFiles[pattern]{^%d.*.tex}{\typeout{F: #1}}
+\QueryFiles[pattern]{^%d.*.tex}{\typeout{percent: #1}}
 
 \QueryFilesTF{t*.*}{\typeout{TFA: #1}}{\typeout{TFA files:}}{\typeout{TFA empty file list}}
 
 \QueryFilesTF{wibble*.*}{\typeout{TFB: #1}}{\typeout{TFB files:}}{\typeout{TFB empty file list}}
 
+
+\QueryFiles{[0-9]+.tex}{\typeout{glob bracket: #1}}
+\QueryFiles[pattern]{^[0-9].*tex}{\typeout{pattern bracket: #1}}
+
+\QueryFiles{*^^*.tex}{\typeout{hathat: #1}}
+
+\def\ext{.sty}
+\QueryFiles{*\ext}{\typeout{ext macro: #1}}
 
 \stop
 
