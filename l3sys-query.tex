@@ -212,8 +212,8 @@ argument, nor can multiple spaces appear between non-space arguments.
 \section{Wildcard expansion handling\label{sec:wildcard}}
 
 The handling of wildcards needs some further comment for those using
-\texttt{l3sys-query} from the command line: the \pkg{expl3} interface described
-in Section~\ref{sec:expl3} handles this aspect automatically for the user.
+\texttt{l3sys-query} from the command line: the \LaTeX\ interfaces described
+in Section~\ref{sec:latex} handle this aspect automatically for the user.
 
 On macOS and Linux, the shell normally expands globs, which include the
 wildcards |*| and |?|, before passing arguments to the appropriate command.
@@ -248,14 +248,113 @@ shell, but in restricted shell escape will give an error such as:
 The \LaTeX{} interfaces described below adust the quoting used depending on the
 |shell-escape| status.
 
-\section{The \LaTeX{} interface\label{sec:expl3}}
+\section{The \LaTeX{} interface\label{sec:latex}}
 
 Using \texttt{l3sys-query} is not tied to access \emph{via} \pkg{expl3}, but
 this is the preferred approach for the \LaTeX{} Team. Details of how to use
 \texttt{l3sys-query} as an \pkg{expl3} programmer will covered in
-\texttt{interface3.pdf} once the macro code is finalized. A document level
+\texttt{interface3.pdf}, however a summary is provided here. A document level
 interface will also be provided via a \pkg{l3sys-query} package which is based
-on the \pkg{expl3} interface and will be described here.
+on the \pkg{expl3} interface and is described below.
+
+
+\subsection{The L3 programming layer interface\label{sec:expl3}}
+
+\begin{function}
+  {\sys_get_query:nN, \sys_get_query:nnN, \sys_get_query:nnnN}
+  \begin{syntax}
+    \cs{sys_get_query:nN} \Arg{cmd} \Arg{tl var}
+    \cs{sys_get_query:nnN} \Arg{cmd} \Arg{spec} \Arg{tl var}
+    \cs{sys_get_query:nnnN} \Arg{cmd} \Arg{options} \Arg{spec} \Arg{tl var}
+  \end{syntax}
+  Sets the \meta{tl var} to the information returned by the
+  \texttt{l3sys-query} \meta{cmd}, potentially supplying the \meta{options}
+  and \meta{spec} to the query call. The valid \meta{cmd} names are at present
+  \begin{itemize}
+    \item \texttt{pwd} Returns the present working directory
+    \item \texttt{ls} Returns a directory listing, using the \meta{spec} to
+      select files and applying the \meta{options} if given
+  \end{itemize}
+  The \meta{spec} should be a file glob and will automatically be passed to
+  the script without shell expansion.
+\end{function}
+
+\begin{function}
+  {\sys_split_query:nN, \sys_split_query:nnN, \sys_split_query:nnnN}
+  \begin{syntax}
+    \cs{sys_split_query:nN} \Arg{cmd} \Arg{seq}
+    \cs{sys_split_query:nnN} \Arg{cmd} \Arg{spec} \Arg{seq}
+    \cs{sys_split_query:nnnN} \Arg{cmd} \Arg{options} \Arg{spec} \Arg{seq}
+  \end{syntax}
+  Works as described for \cs{sys_split_query:nnnN}, but sets the \meta{seq}
+  to contain one entry for each line returned by \texttt{l3sys-query}.
+\end{function}
+
+\subsection{The document level key-value  interface\label{sec:kv}}
+
+A document level interface is provided by the \pkg{l3sys-query} package.
+This provides an interface based on \pkg{l3keys} that  allows the options to be
+specified and checked individually. Internally the supplyed key values are used to build up
+the arguments to the commands described above in \ref{sec:expl3}
+
+\begin{function}
+  {\QueryWorkingDirectory}
+  \begin{syntax}
+    \cs{QueryWorkingDirectory} \Arg{result cmd}
+  \end{syntax}
+  Returns the current working directory of the \TeX\ system in the
+  supplied command \meta{result cmd}.
+\end{function}
+
+\begin{function}
+  {\QueryFiles, \QueryFilesTF}
+  \begin{syntax}
+    \cs{QueryFiles} \oarg{options} \Arg{spec} \Arg{function}
+    \cs{QueryFilesTF} \oarg{options} \Arg{spec} \Arg{function} \Arg{pre code} \Arg{empty list code}
+  \end{syntax}
+  This generates a file list  based on the \meta{spec} and \meta{options}
+  the options then applies \meta{function}  to each item in the sequence of filenames..
+  The \meta{function} should be a macro body which will be passed the file path as  |#1|.
+
+ The TF version executes the T (\meta{pre code}) argument before iterating over the list
+ and the F (\meta{empty list code}) argument if the list is empty.
+
+ Note that this interface in mapping directly over the sequence of
+ filenames does not allow some uses which are provided by the
+ programming interface described in the previous section, which allows
+ the sequence to be manipulated before being used.
+
+ The defined keys map vey closely to the options of the \texttt{l3sys-query} command.
+
+ \begin{itemize}
+ \item 
+ The keys \texttt{recursive}, \texttt{ignore-case}, \texttt{reverse}, \texttt{pattern}
+ take no values and map directly to the command line options of the same name.
+
+ \item
+ The key \texttt{sort} accepts the values \texttt{date} and \texttt{name}.
+
+ \item
+ The key \texttt{type} accepts \texttt{d} or \texttt{f}.
+
+ \item
+ The key \texttt{exclude} accepts a glob (or Lua pattern) mathing
+ files to be excluded.  The package arranges that the quoting of the
+ argument is automatically added if unrestricted shell escape is
+ enabled.
+
+\end{itemize}
+
+ Within the main \meta{spec} argument, and the value of the \texttt{exclude} key,
+ the following characters may need special handling.
+ |~| may be used (which \texttt{kpathsea} uses to denote the users home directory).
+ |\%|, or at the top level |%|, may be used to produce a literal |%|
+ which may be especially useful if the \texttt{pattern} key is used
+ as \% is the escape character in Lua patterns.
+ 
+ 
+
+\end{function}
 
 \end{documentation}
 
