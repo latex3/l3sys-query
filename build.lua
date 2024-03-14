@@ -3,7 +3,7 @@ module = "l3sys-query"
 
 scriptfiles = {"l3sys-query.lua"}
 sourcefiles = scriptfiles
-tagfiles = {"CHANGELOG.md", "l3sys-query.lua", "l3sys-query-tool.tex"}
+tagfiles = {"CHANGELOG.md", "README.md", "l3sys-query.lua", "l3sys-query-tool.tex"}
 typesetfiles = {"l3sys-query-tool.tex"}
 unpackfiles = {}
 
