@@ -85,8 +85,8 @@ function update_tag(file,content,tagname,tagdate)
       "\nRelease " .. tagname .. "\n")
   elseif string.match(file, "%.tex$") then
     return gsub(content,
-      "Released " .. iso    ,
-      "Released " .. tagname)
+      "Release " .. iso    ,
+      "Release " .. tagname)
     elseif string.match(file, "%.lua$") then
       return gsub(content,
         'release_date = "' .. iso     .. '"',
