@@ -3,7 +3,7 @@ module = "l3sys-query"
 
 scriptfiles = {"l3sys-query.lua"}
 sourcefiles = scriptfiles
-typesetfiles = {"l3sys-query.tex"}
+typesetfiles = {"l3sys-query-tool.tex"}
 unpackfiles = {}
 
 -- Auto-generate a .1 file from the help
