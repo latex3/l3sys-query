@@ -3,6 +3,7 @@ module = "l3sys-query"
 
 scriptfiles = {"l3sys-query.lua"}
 sourcefiles = scriptfiles
+tagfiles = {"CHANGELOG.md", "l3sys-query.lua", "l3sys-query-tool.tex"}
 typesetfiles = {"l3sys-query-tool.tex"}
 unpackfiles = {}
 
@@ -45,4 +46,55 @@ function  docinit_hook()
   f:write((table.concat(man_t,"\n"):gsub("\n$","")))
   f:close()
   return 0
+end
+
+-- Detail how to set the version automatically
+function update_tag(file,content,tagname,tagdate)
+  local gsub = string.gsub
+  local match = string.match
+
+  local iso = "%d%d%d%d%-%d%d%-%d%d"
+  local url = "https://github.com/latex3/l3sys-query/compare/"
+  -- update copyright
+  local year = os.date("%Y")
+  local oldyear = math.tointeger(year - 1)
+  if match(content,"%(C%)%s*" .. oldyear .. " The LaTeX Project") then
+    content = gsub(content,
+      "%(C%)%s*" .. oldyear .. " The LaTeX Project",
+      "(C) " .. year .. " The LaTeX Project")
+  elseif match(content,"%(C%)%s*%d%d%d%d%-" .. oldyear .. " The LaTeX Project") then
+    content = gsub(content,
+      "%(C%)%s*(%d%d%d%d%-)" .. oldyear .. " The LaTeX Project",
+      "(C) %1" .. year .. " The LaTeX Project")
+  end
+  -- update release date
+  if match(file, "%.md$") then
+    if match(file,"CHANGELOG.md") then
+      local previous = match(content,"compare/(" .. iso .. ")%.%.%.HEAD")
+      if tagname == previous then return content end
+      content = gsub(content,
+        "## %[Unreleased%]",
+        "## [Unreleased]\n\n## [" .. tagname .."]")
+      return gsub(content,
+        iso .. "%.%.%.HEAD",
+        tagname .. "...HEAD\n[" .. tagname .. "]: " .. url .. previous
+          .. "..." .. tagname)
+    end
+    return gsub(content,
+      "\nRelease " .. iso     .. "\n",
+      "\nRelease " .. tagname .. "\n")
+  elseif string.match(file, "%.tex$") then
+    return gsub(content,
+      "Released " .. iso    ,
+      "Released " .. tagname)
+    elseif string.match(file, "%.lua$") then
+      return gsub(content,
+        'release_date = "' .. iso     .. '"',
+        'release_date = "' .. tagname .. '"')
+  end
+  return content
+end
+
+function tag_hook(tagname)
+  os.execute('git commit -a -m "Step release tag"')
 end
