@@ -10,6 +10,9 @@ Changelog](https://keepachangelog.com/en/1.0.0/), this project uses date-based
 ### Added
 - PDF documentation in distribution
 
+### Changed
+- Documentation tweaks
+
 ## [2024-03-14]
 
 ### Added
