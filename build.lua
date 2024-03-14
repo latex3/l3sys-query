@@ -2,6 +2,7 @@
 module = "l3sys-query"
 
 scriptfiles = {"l3sys-query.lua"}
+scriptmanfiles = {module .. ".1"}
 sourcefiles = scriptfiles
 tagfiles = {"CHANGELOG.md", "README.md", "l3sys-query.lua", "l3sys-query-tool.tex"}
 typesetfiles = {"l3sys-query-tool.tex"}
