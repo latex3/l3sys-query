@@ -89,13 +89,14 @@ local option_list =
     sort =
       {
         cmds = {"ls"},
-        desc = "Method used to sort directory listing",
+        desc = "[name|date] Method used to sort directory listing",
         type = "string"
       },
     type = 
       {
         cmds = {"ls"},
-        desc  = "Selects the type of entry in a directory listing",
+	value = "d|f",
+        desc  = "[d|f] Select just the directories or files in a listing",
         type  = "string"
       },
     version =
