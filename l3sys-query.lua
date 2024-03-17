@@ -235,6 +235,8 @@ local function parse_args()
     -- No options are allowed in position 1, so filter those out
     if a == "--version" or a == "-v" then
       cmd = "version"
+    elseif a == "--help" or a == "-h" then
+      cmd = "help"
     elseif not match(a,"^%-") then
       cmd = a
     end
@@ -523,11 +525,13 @@ end
 --
 -- Execute the given command
 --
-
+if cmd == "help" then
+help()
+exit(0)
+elseif cmd == "version" then
+version()
+exit(0)
 -- Only 'known' commands do anything at all
-if cmd == "version" then
-  version()
-  exit(0)
 elseif not cmd_impl[cmd] then
   if cmd == "" then
     info_and_quit(script_name .. ": No " .. script_name .. " command specified.")
@@ -541,7 +545,13 @@ end
 -- Check options are valid for cmd
 for k,_ in pairs(options) do
   local cmds = option_list[k].cmds
-  if not cmds then
+  if k == "help" then
+    help()
+    exit(0)
+  elseif k == "version" then
+    version()
+    exit(0)
+  elseif not cmds then
     -- Should not be possible:
     -- everything except --help and --version should have an entry
     print("Internal error")
