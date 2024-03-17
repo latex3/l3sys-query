@@ -530,7 +530,7 @@ if cmd == "version" then
   exit(0)
 elseif not cmd_impl[cmd] then
   if cmd == "" then
-    help()
+    info_and_quit(script_name .. ": No " .. script_name .. " command specified.")
   else
     info_and_quit(script_name .. ": '" .. cmd .. "' is not a " .. script_name ..
       " command.")
