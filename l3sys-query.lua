@@ -51,7 +51,7 @@ local option_list =
     exclude =
       {
         cmds = {"ls"},
-        desc = "Exclude entries from directory listing",
+        desc = "[<xarg>] Exclude entries from directory listing",
         type = "string"
       },
     ["ignore-case"] =
@@ -95,7 +95,6 @@ local option_list =
     type = 
       {
         cmds = {"ls"},
-	value = "d|f",
         desc  = "[d|f] Select just the directories or files in a listing",
         type  = "string"
       },
