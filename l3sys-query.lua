@@ -527,11 +527,11 @@ end
 -- Execute the given command
 --
 if cmd == "help" then
-help()
-exit(0)
+  help()
+  exit(0)
 elseif cmd == "version" then
-version()
-exit(0)
+  version()
+  exit(0)
 -- Only 'known' commands do anything at all
 elseif not cmd_impl[cmd] then
   if cmd == "" then
