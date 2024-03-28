@@ -7,6 +7,8 @@ Changelog](https://keepachangelog.com/en/1.0.0/), this project uses date-based
 
 ## [Unreleased]
 
+## [2024-03-28]
+
 ### Changed
 - Improvements to help
 
@@ -24,5 +26,6 @@ Changelog](https://keepachangelog.com/en/1.0.0/), this project uses date-based
 ### Added
 - New script
 
-[Unreleased]: https://github.com/latex3/l3sys-query/compare/2024-03-15...HEAD
+[Unreleased]: https://github.com/latex3/l3sys-query/compare/2024-03-28...HEAD
+[2024-03-28]: https://github.com/latex3/l3sys-query/compare/2024-03-15...2024-03-28
 [2024-03-15]: https://github.com/latex3/l3sys-query/compare/2024-03-14...2024-03-15
