@@ -31,7 +31,7 @@ function  docinit_hook()
   local overview = readme:sub(desc_start + 2,desc_end - 2):gsub("[`_]","")
   insert(man_t,overview)
 
-  local cmd = "./" .. module .. ".lua --help"
+  local cmd = "texlua ./" .. module .. ".lua --help"
   local f = assert(io.popen(cmd,"r"))
   local help_text = assert(f:read("*a"))
   f:close()
