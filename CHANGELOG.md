@@ -7,6 +7,9 @@ Changelog](https://keepachangelog.com/en/1.0.0/), this project uses date-based
 
 ## [Unreleased]
 
+### Changed
+- Improvement to man file, `SYNOPSIS` section
+
 ## [2024-04-03]
 
 ### Changed
