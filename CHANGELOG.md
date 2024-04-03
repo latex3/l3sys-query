@@ -7,6 +7,9 @@ Changelog](https://keepachangelog.com/en/1.0.0/), this project uses date-based
 
 ## [Unreleased]
 
+### Changed
+- Corrected generation of man file
+
 ## [2024-03-28]
 
 ### Changed

@@ -368,7 +368,7 @@ local function help()
 
   -- 'Header' of fixed info
   print("Usage: " .. script_name .. " <cmd> [<options>] [<args>]\n")
-  print("Valid  <cmd>s are:")
+  print("Valid <cmd>s are:")
 
   -- Sort the commands, pad the descriptions, print
   local t,longest = format_list(cmd_desc)
