@@ -1,6 +1,6 @@
 # `l3sys-query`: System queries for LaTeX using Lua
 
-Release 2024-03-28
+Release 2024-04-03
 
 ## Overview
 
