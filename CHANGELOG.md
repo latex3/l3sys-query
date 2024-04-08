@@ -7,6 +7,8 @@ Changelog](https://keepachangelog.com/en/1.0.0/), this project uses date-based
 
 ## [Unreleased]
 
+## [2024-04-08]
+
 ### Changed
 - Improvement to man file, `SYNOPSIS` section
 
@@ -34,7 +36,8 @@ Changelog](https://keepachangelog.com/en/1.0.0/), this project uses date-based
 ### Added
 - New script
 
-[Unreleased]: https://github.com/latex3/l3sys-query/compare/2024-04-03...HEAD
+[Unreleased]: https://github.com/latex3/l3sys-query/compare/2024-04-08...HEAD
+[2024-04-08]: https://github.com/latex3/l3sys-query/compare/2024-04-03...2024-04-08
 [2024-04-03]: https://github.com/latex3/l3sys-query/compare/2024-03-28...2024-04-03
 [2024-03-28]: https://github.com/latex3/l3sys-query/compare/2024-03-15...2024-03-28
 [2024-03-15]: https://github.com/latex3/l3sys-query/compare/2024-03-14...2024-03-15
