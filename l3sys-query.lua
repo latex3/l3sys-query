@@ -323,7 +323,7 @@ local function parse_args()
           options[optname] = optarg
         else
           local opts = options[optname] or {}
-          for hit in gmatch(optarg,"([^,%s]+)") do
+          for hit in gmatch(optarg,"([^,]+)") do
             insert(opts,hit)
           end
           options[optname] = opts
